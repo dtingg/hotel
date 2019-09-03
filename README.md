@@ -83,7 +83,7 @@ Remember: Your job is to only build the classes that store information and handl
 
 - As a user of the hotel system...
   - I can access the list of all of the rooms in the hotel
-  - I can get a reservation of a room for a given date range
+  - I can make a reservation of a room for a given date range
   - I can access the list of reservations for a specific date, so that I can track reservations by date
   - I can get the total cost for a given reservation
   - I want exception raised when an invalid date range is provided, so that I can't make a reservation for an invalid date range
