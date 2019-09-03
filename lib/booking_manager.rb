@@ -21,7 +21,9 @@ module Hotel
     
     def find_reservations(date)
       day_reservations = all_reservations.select do |reservation|
-        reservation.check_in == Date.parse(date)
+        start_date = reservation.check_in
+        end_date = reservation.check_out - 1
+        (start_date..end_date).include?(Date.parse(date))
       end
       
       return day_reservations
