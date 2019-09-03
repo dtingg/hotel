@@ -24,4 +24,14 @@ describe "BookingManager class" do
       expect(manager.all_reservations).must_equal []
     end  
   end
+  
+  describe "Make reservation method" do
+    it "Creates a reservation" do
+      manager = Hotel::BookingManager.new
+      
+      reservation = manager.make_reservation("August 10, 2019", "August 12, 2019")
+      
+      expect(reservation).must_be_kind_of Hotel::Reservation
+    end
+  end
 end

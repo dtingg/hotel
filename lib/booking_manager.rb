@@ -7,5 +7,16 @@ module Hotel
       @all_rooms = Hotel::Room.all
       @all_reservations = []
     end
+    
+    def make_reservation(check_in, check_out)
+      id = all_reservations.length + 1
+      room = all_rooms[0]
+      
+      reservation = Hotel::Reservation.new(id, room, check_in, check_out)
+      all_reservations << reservation
+      room.reservations << reservation
+      
+      return reservation
+    end
   end
 end
