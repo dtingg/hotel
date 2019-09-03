@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 describe "Reservation class" do
-  describe "Initialize method" do
+  describe "initialize method" do
     it "Creates an instance of Reservation" do
       reservation = Hotel::Reservation.new(1, 5, "August 1, 2019", "August 5, 2019")
       
@@ -35,9 +35,16 @@ describe "Reservation class" do
       expect(reservation).must_respond_to :check_out
       expect(reservation.check_out).must_equal Date.parse("August 5, 2019")
     end
+    
+    it "Throws an error if check_in is after check_out" do
+      check_in = "August 5, 2019"
+      check_out = "August 1, 2019"
+      
+      expect { Hotel::Reservation.new(1, 5, check_in, check_out) }.must_raise ArgumentError
+    end
   end  
   
-  describe "Total cost method" do
+  describe "total cost method" do
     it "Returns the cost for a reservation" do
       room = Hotel::Room.new(5)
       reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019")
