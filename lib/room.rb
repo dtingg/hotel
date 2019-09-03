@@ -13,5 +13,15 @@ module Hotel
       @nightly_cost = 200
       @reservations = []
     end
+    
+    def self.all
+      all_rooms = []
+      
+      NUMBER_OF_ROOMS.times do |i|
+        all_rooms << self.new(i + 1)
+      end
+      
+      return all_rooms
+    end
   end
 end
