@@ -18,5 +18,13 @@ module Hotel
       
       return reservation
     end
+    
+    def find_reservations(date)
+      day_reservations = all_reservations.select do |reservation|
+        reservation.check_in == Date.parse(date)
+      end
+      
+      return day_reservations
+    end
   end
 end
