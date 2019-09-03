@@ -9,9 +9,10 @@ describe "Room class" do
     end    
     
     it "Keeps track of id" do
-      room = Hotel::Room.new(1)
+      room = Hotel::Room.new(5)
       
       expect(room).must_respond_to :id
+      expect(room.id).must_equal 5
     end
     
     it "Can have an id between 1 and 20" do
