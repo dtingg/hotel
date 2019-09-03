@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 describe "BookingManager class" do
-  describe "Initialize method" do
+  describe "initialize method" do
     it "Creates an instance of BookingManager" do
       manager = Hotel::BookingManager.new
       
@@ -25,7 +25,26 @@ describe "BookingManager class" do
     end  
   end
   
-  describe "Make reservation method" do
+  describe "view_available_rooms method" do
+    it "Returns 20 available rooms when no rooms are booked" do
+      manager = Hotel::BookingManager.new
+      
+      rooms = manager.view_available_rooms("August 5, 2019", "August 8, 2019")
+      
+      expect(rooms.length).must_equal 20
+    end
+    
+    it "Returns 19 available rooms when one room is booked" do
+      manager = Hotel::BookingManager.new
+      manager.make_reservation("August 10, 2019", "August 12, 2019")
+      
+      rooms = manager.view_available_rooms("August 10, 2019", "August 12, 2019")
+      
+      expect(rooms.length).must_equal 19
+    end    
+  end
+  
+  describe "make_reservation method" do
     it "Creates a reservation" do
       manager = Hotel::BookingManager.new
       
@@ -35,7 +54,7 @@ describe "BookingManager class" do
     end
   end
   
-  describe "Find reservations method" do
+  describe "find_reservations method" do
     it "Finds reservations for a particular date" do
       manager = Hotel::BookingManager.new
       
