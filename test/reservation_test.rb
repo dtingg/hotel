@@ -36,6 +36,19 @@ describe "Reservation class" do
       expect(reservation.check_out).must_equal Date.parse("August 5, 2019")
     end
     
+    it "Keeps track of discount" do
+      reservation = Hotel::Reservation.new(1, 5, "August 1, 2019", "August 5, 2019", 25)
+      
+      expect(reservation).must_respond_to :discount
+      expect(reservation.discount).must_equal 0.25
+    end
+    
+    it "Sets a default discount of nil" do
+      reservation = Hotel::Reservation.new(1, 5, "August 1, 2019", "August 5, 2019")
+      
+      assert_nil(reservation.discount)
+    end
+    
     it "Throws an error if check_in is after check_out" do
       check_in = "August 5, 2019"
       check_out = "August 1, 2019"
@@ -50,6 +63,13 @@ describe "Reservation class" do
       reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019")
       
       expect(reservation.total_cost).must_equal 800
+    end
+    
+    it "Returns the correct cost if there is a discount" do
+      room = Hotel::Room.new(5)
+      reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019", 50)
+      
+      expect(reservation.total_cost).must_equal 400
     end
   end
 end
