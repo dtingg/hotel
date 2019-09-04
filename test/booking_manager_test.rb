@@ -44,6 +44,19 @@ describe "BookingManager class" do
     end    
   end
   
+  describe "available_room_names method" do
+    it "Returns a string with the available room names" do
+      manager = Hotel::BookingManager.new
+      
+      expected_string = "Available rooms for August 1, 2019 to August 5, 2019:" \
+      "\n1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20"
+      
+      result = manager.available_room_names("August 1, 2019", "August 5, 2019")
+      
+      expect(result).must_equal expected_string
+    end
+  end
+  
   describe "make_reservation method" do
     it "Creates a reservation" do
       manager = Hotel::BookingManager.new

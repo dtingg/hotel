@@ -31,6 +31,18 @@ module Hotel
       return available_rooms
     end
     
+    def available_room_names(check_in, check_out)
+      available_rooms = available_rooms(check_in, check_out)
+      room_names = []
+      
+      available_rooms.each do |room|
+        room_names << room.id
+      end
+      
+      formatted_string = "Available rooms for #{check_in} to #{check_out}:\n#{room_names.join(", ")}"
+      return formatted_string
+    end
+    
     def make_reservation(check_in, check_out)
       id = all_reservations.length + 1
       room = available_rooms(check_in, check_out)[0]
@@ -46,6 +58,7 @@ module Hotel
       return reservation
     end
     
+    # Includes new and current guests, but not people who checked out on that date.
     def find_reservations(date)
       day_reservations = all_reservations.select do |reservation|
         start_date = reservation.check_in
