@@ -2,6 +2,11 @@ require_relative "test_helper"
 
 describe "BookingManager class" do
   let (:manager) { Hotel::BookingManager.new }
+  let (:room1) { Hotel::Room.new(1) }
+  let (:room2) { Hotel::Room.new(2) }
+  let (:room3) { Hotel::Room.new(3) }
+  let (:room4) { Hotel::Room.new(4) }
+  let (:room5) { Hotel::Room.new(5) }
   
   describe "initialize method" do
     it "Creates an instance of BookingManager" do
@@ -63,7 +68,13 @@ describe "BookingManager class" do
     end
   end
   
-  
+  describe "make_block method" do
+    it "Creates a block reservation" do
+      block = manager.make_block("White", "August 5", "August 10", 3, 50)
+      
+      expect(block).must_be_kind_of Hotel::RoomBlock
+    end
+  end
   
   describe "find_reservations method" do
     it "Finds reservations for a particular date" do
