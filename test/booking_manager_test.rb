@@ -42,18 +42,14 @@ describe "BookingManager class" do
       
       expect(rooms.length).must_equal 19
     end    
-  end
-  
-  describe "available_room_names method" do
-    it "Returns a string with the available room names" do
+    
+    it "Returns 20 available rooms if new reservation doesn't conflict with existing reservation" do
       manager = Hotel::BookingManager.new
+      manager.make_reservation("August 9, 2019", "August 12, 2019")
       
-      expected_string = "Available rooms for August 1, 2019 to August 5, 2019:" \
-      "\n1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20"
+      rooms = manager.available_rooms("August 12, 2019", "August 14, 2019")
       
-      result = manager.available_room_names("August 1, 2019", "August 5, 2019")
-      
-      expect(result).must_equal expected_string
+      expect(rooms.length).must_equal 20
     end
   end
   
@@ -64,8 +60,8 @@ describe "BookingManager class" do
       reservation = manager.make_reservation("August 10, 2019", "August 12, 2019")
       
       expect(reservation).must_be_kind_of Hotel::Reservation
-      expect(manager.all_reservations.include?reservation).must_equal true
-      expect(reservation.room.reservations.include?reservation).must_equal true
+      expect(manager.all_reservations.include?(reservation)).must_equal true
+      expect(reservation.room.reservations.include?(reservation)).must_equal true
     end
     
     it "Raises an error if there are no rooms available" do

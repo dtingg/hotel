@@ -8,7 +8,7 @@ module Hotel
       @all_reservations = []
     end
     
-    def available?(check_in, check_out, room)
+    def room_available?(check_in, check_out, room)
       room.reservations.each do |reservation|
         day = Date.parse(check_in)
         last_day = Date.parse(check_out)
@@ -25,22 +25,10 @@ module Hotel
       available_rooms = []
       
       all_rooms.each do |room|
-        result = available?(check_in, check_out, room)        
+        result = room_available?(check_in, check_out, room)        
         available_rooms << room if result
       end        
       return available_rooms
-    end
-    
-    def available_room_names(check_in, check_out)
-      available_rooms = available_rooms(check_in, check_out)
-      room_names = []
-      
-      available_rooms.each do |room|
-        room_names << room.id
-      end
-      
-      formatted_string = "Available rooms for #{check_in} to #{check_out}:\n#{room_names.join(", ")}"
-      return formatted_string
     end
     
     def make_reservation(check_in, check_out)

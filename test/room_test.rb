@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 describe "Room class" do
-  describe "Initialize method" do
+  describe "initialize method" do
     it "Creates an instance of Room" do
       room = Hotel::Room.new(1)
       

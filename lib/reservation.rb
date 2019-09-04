@@ -16,7 +16,6 @@ module Hotel
     
     def total_cost
       nights = check_out - check_in
-      
       return nights * room.nightly_cost
     end
   end
