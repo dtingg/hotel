@@ -1,22 +1,20 @@
 require_relative "test_helper"
 
 describe "Room class" do
+  let (:room) { Hotel::Room.new(1) }
+  
   describe "initialize method" do
     it "Creates an instance of Room" do
-      room = Hotel::Room.new(1)
-      
       expect(room).must_be_kind_of Hotel::Room
     end    
     
     it "Keeps track of id" do
-      room = Hotel::Room.new(5)
-      
       expect(room).must_respond_to :id
-      expect(room.id).must_equal 5
+      expect(room.id).must_equal 1
     end
     
     it "Can have an id between 1 and 20" do
-      expect(Hotel::Room.new(1).id).must_equal 1
+      expect(room.id).must_equal 1
       expect(Hotel::Room.new(20).id).must_equal 20
     end
     
@@ -26,14 +24,10 @@ describe "Room class" do
     end
     
     it "Has a default nightly cost" do
-      room = Hotel::Room.new(1)
-      
       expect(room.nightly_cost).must_equal 200
     end
     
     it "Has a default empty array of reservations" do
-      room = Hotel::Room.new(1)
-      
       expect(room.reservations).must_be_kind_of Array
       expect(room.reservations).must_equal []
     end
