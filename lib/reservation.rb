@@ -1,13 +1,14 @@
 module Hotel
   
   class Reservation
-    attr_reader :id, :room, :check_in, :check_out, :discount
+    attr_reader :id, :room, :check_in, :check_out, :status, :discount
     
-    def initialize(id, room, check_in, check_out, discount = nil)
+    def initialize(id, room, check_in, check_out, status = :CONFIRMED, discount = nil)
       @id = id
       @room = room
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
+      @status = status
       @discount = discount
       
       if @check_in > @check_out

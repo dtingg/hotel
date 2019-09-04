@@ -54,6 +54,11 @@ describe "RoomBlock class" do
       expect(block.room_array.include?(room3)).must_equal true
     end
     
+    it "Throws an error if the room array length is not equal to num_rooms" do
+      expect { Hotel::RoomBlock.new("Smith", "August 1, 2019", "August 5, 2019", 2, [room1], 50) }.must_raise ArgumentError
+      expect { Hotel::RoomBlock.new("Smith", "August 1, 2019", "August 5, 2019", 1, [room1, room2], 50) }.must_raise ArgumentError
+    end
+    
     it "Keeps track of discount" do
       expect(block).must_respond_to :discount
       expect(block.discount).must_equal 0.50

@@ -19,6 +19,10 @@ module Hotel
       
       @room_array = room_array
       
+      if room_array.length != num_rooms
+        raise ArgumentError.new("There are not enough rooms for this hotel block.")
+      end
+      
       @discount = discount / 100.0
       
       @reservations = []
