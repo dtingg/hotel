@@ -1,9 +1,9 @@
 module Hotel
   
   class RoomBlock
-    attr_reader :name, :check_in, :check_out, :num_rooms, :discount
+    attr_reader :name, :check_in, :check_out, :num_rooms, :room_array, :discount, :reservations
     
-    def initialize(name, check_in, check_out, num_rooms, discount)
+    def initialize(name, check_in, check_out, num_rooms, room_array, discount)
       @name = name.capitalize  
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
@@ -17,7 +17,11 @@ module Hotel
       end
       @num_rooms = num_rooms
       
+      @room_array = room_array
+      
       @discount = discount / 100.0
+      
+      @reservations = []
     end
   end
 end
