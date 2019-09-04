@@ -21,8 +21,8 @@ describe "Room class" do
     end
     
     it "Raises an ArgumentError if id is outside of 1 - 20" do
-      expect{Hotel::Room.new(0)}.must_raise ArgumentError
-      expect{Hotel::Room.new(21)}.must_raise ArgumentError
+      expect{ Hotel::Room.new(0) }.must_raise ArgumentError
+      expect{ Hotel::Room.new(21) }.must_raise ArgumentError
     end
     
     it "Has a default nightly cost" do
@@ -39,7 +39,7 @@ describe "Room class" do
     end
   end
   
-  describe "Self.all method" do
+  describe "self.all method" do
     it "Returns an array of 20 room objects" do
       all_rooms = Hotel::Room.all
       

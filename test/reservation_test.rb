@@ -44,7 +44,7 @@ describe "Reservation class" do
     end
   end  
   
-  describe "total cost method" do
+  describe "total_cost method" do
     it "Returns the cost for a reservation" do
       room = Hotel::Room.new(5)
       reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019")

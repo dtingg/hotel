@@ -1,4 +1,5 @@
 module Hotel
+  
   class Room    
     NUMBER_OF_ROOMS = 20
     
