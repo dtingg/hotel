@@ -37,7 +37,7 @@ describe "Reservation class" do
     end
     
     it "Keeps track of discount" do
-      reservation = Hotel::Reservation.new(1, 5, "August 1, 2019", "August 5, 2019", 25)
+      reservation = Hotel::Reservation.new(1, 5, "August 1, 2019", "August 5, 2019", 0.25)
       
       expect(reservation).must_respond_to :discount
       expect(reservation.discount).must_equal 0.25
@@ -67,7 +67,7 @@ describe "Reservation class" do
     
     it "Returns the correct cost if there is a discount" do
       room = Hotel::Room.new(5)
-      reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019", 50)
+      reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019", 0.50)
       
       expect(reservation.total_cost).must_equal 400
     end
