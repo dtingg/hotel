@@ -3,7 +3,7 @@ module Hotel
   class RoomBlock
     attr_reader :name, :check_in, :check_out, :num_rooms, :discount, :reservations
     
-    def initialize(name: , check_in: , check_out: , num_rooms: , discount: )
+    def initialize(name: , check_in: , check_out: , num_rooms: , discount:)
       @name = name.capitalize  
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
@@ -23,6 +23,14 @@ module Hotel
     
     def add_reservation(reservation)
       reservations << reservation
+    end
+    
+    def available_rooms
+      available_rooms = reservations.select do |reservation|
+        reservation.status == :HOLD
+      end
+      
+      return available_rooms
     end
   end
 end

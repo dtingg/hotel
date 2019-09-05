@@ -17,6 +17,10 @@ module Hotel
       @discount = discount
     end
     
+    def confirm_reservation
+      @status = :CONFIRMED
+    end
+    
     def total_cost
       nights = check_out - check_in
       

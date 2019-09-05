@@ -100,5 +100,18 @@ describe "RoomBlock class" do
         expect(block.reservations.include?(reservation)).must_equal true        
       end
     end
+    
+    describe "available_rooms method" do
+      it "Returns the available rooms for a block" do
+        manager = Hotel::BookingManager.new
+        block = manager.make_block(name: "Tingg", check_in: "August 5", check_out: "August 10", num_rooms: 3, discount: 50) 
+        
+        expect(block.available_rooms.length).must_equal 3
+        
+        block.available_rooms.each do |room|
+          expect(room.status).must_equal :HOLD
+        end
+      end
+    end
   end
 end
