@@ -42,13 +42,15 @@ module Hotel
       end
       
       reservation = Hotel::Reservation.new(
-      id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount)
+        id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount
+      )
       all_reservations << reservation
-      room.reservations << reservation
+      room.add_reservation(reservation)
       
       return reservation
     end
     
+    # This will find available rooms for you, so you don't need to specify them
     def make_block(name:, check_in:, check_out:, num_rooms:, discount:)
       rooms = available_rooms(check_in: check_in, check_out: check_out)
       
@@ -57,27 +59,28 @@ module Hotel
       end
       
       block = Hotel::RoomBlock.new(
-      name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount)
-      
-      num_rooms.times do
-        reservation = make_reservation(check_in: check_in, check_out: check_out, status: :HOLD, discount: discount)
-        block.reservations << reservation
-      end  
-      
-      all_blocks << block
-      return block
-    end
-    
-    # Includes new and current guests, but not people who checked out on that date.
-    # Shows confirmed reservations, but not unconfirmed rooms being held for a room block
-    def find_reservations(date)
-      day_reservations = all_reservations.select do |reservation|
-        start_date = reservation.check_in
-        end_date = reservation.check_out
-        (start_date...end_date).include?(Date.parse(date)) && reservation.status == :CONFIRMED
+        name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount)
+        
+        num_rooms.times do
+          reservation = make_reservation(check_in: check_in, check_out: check_out, status: :HOLD, discount: discount)
+          block.add_reservation(reservation)
+        end  
+        
+        all_blocks << block
+        return block
       end
       
-      return day_reservations
+      # Includes new and current guests, but not people who checked out on that date.
+      # Shows confirmed reservations, but not unconfirmed rooms being held for a room block
+      def find_reservations(date)
+        day_reservations = all_reservations.select do |reservation|
+          start_date = reservation.check_in
+          end_date = reservation.check_out
+          (start_date...end_date).include?(Date.parse(date)) && reservation.status == :CONFIRMED
+        end
+        
+        return day_reservations
+      end
     end
   end
-end
+  

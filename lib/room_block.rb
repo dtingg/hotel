@@ -20,5 +20,9 @@ module Hotel
       @discount = discount / 100.0
       @reservations = []
     end
+    
+    def add_reservation(reservation)
+      reservations << reservation
+    end
   end
 end

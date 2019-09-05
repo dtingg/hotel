@@ -33,6 +33,16 @@ describe "Room class" do
     end
   end
   
+  describe "add_reservation method" do
+    it "Adds a reservation to the reservations array" do
+      reservation = Hotel::Reservation.new(id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019")
+      room.add_reservation(reservation)
+      
+      expect(room.reservations.length).must_equal 1
+      expect(room.reservations.include?(reservation)).must_equal true
+    end
+  end
+  
   describe "self.all method" do
     it "Returns an array of 20 room objects" do
       all_rooms = Hotel::Room.all

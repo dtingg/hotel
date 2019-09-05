@@ -38,7 +38,6 @@ describe "BookingManager class" do
       expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 5, 2019", room: room1)).must_equal true
       expect(manager.room_available?(check_in: "May 10, 2019", check_out: "May 15, 2019", room: room1)).must_equal true
       expect(manager.room_available?(check_in: "May 15, 2019", check_out: "May 20, 2019", room: room1)).must_equal true
-      
     end
     
     it "Returns false if a room is unavailable" do
@@ -109,42 +108,43 @@ describe "BookingManager class" do
       manager.make_block(name: "Tingg", check_in: "August 5", check_out: "August 10", num_rooms: 5, discount: 50)
       
       expect{ manager.make_block(
-      name: "Wright", check_in: "August 5", check_out: "August 10", num_rooms: 3, discount: 50) }.must_raise ArgumentError
-    end
-    
-    it "Throws an error if check_in date is after check_out date" do
-      expect{ manager.make_block(
-      name: "Tingg", check_in: "August 15", check_out: "August 10", num_rooms: 3, discount: 50) }.must_raise ArgumentError
-    end
-    
-    it "Makes single reservations for each room in the block" do
-      manager.make_block(name: "Tingg", check_in: "August 5", check_out: "August 10", num_rooms: 3, discount: 50)
-      
-      expect(manager.all_reservations.length).must_equal 3
-      expect(room1.reservations.length).must_equal 1
-      expect(room2.reservations.length).must_equal 1
-      expect(room3.reservations.length).must_equal 1
-    end
-  end
-  
-  describe "find_reservations method" do
-    it "Finds confirmed reservations for a particular date" do      
-      manager.make_reservation(check_in: "August 10, 2019", check_out: "August 12, 2019", status: :CONFIRMED)
-      manager.make_reservation(check_in: "August 12, 2019", check_out: "August 20, 2019", status: :CONFIRMED)
-      manager.make_reservation(check_in: "August 10, 2019", check_out: "August 15, 2019", status: :CONFIRMED)
-      manager.make_reservation(check_in: "August 12, 2019", check_out: "August 14, 2019", status: :HOLD)
-      manager.make_reservation(check_in: "August 15, 2019", check_out: "August 16, 2019", status: :CONFIRMED)
-      
-      date = "August 12, 2019"
-      
-      august_12_reservations = manager.find_reservations(date)
-      
-      expect(august_12_reservations).must_be_kind_of Array
-      expect(august_12_reservations.length).must_equal 2
-      
-      august_12_reservations.each do |reservation|
-        reservation.must_be_kind_of Hotel::Reservation
+        name: "Wright", check_in: "August 5", check_out: "August 10", num_rooms: 3, discount: 50) }.must_raise ArgumentError
       end
-    end 
-  end
-end
+      
+      it "Throws an error if check_in date is after check_out date" do
+        expect{ manager.make_block(
+          name: "Tingg", check_in: "August 15", check_out: "August 10", num_rooms: 3, discount: 50) }.must_raise ArgumentError
+        end
+        
+        it "Makes single reservations for each room in the block" do
+          manager.make_block(name: "Tingg", check_in: "August 5", check_out: "August 10", num_rooms: 3, discount: 50)
+          
+          expect(manager.all_reservations.length).must_equal 3
+          expect(room1.reservations.length).must_equal 1
+          expect(room2.reservations.length).must_equal 1
+          expect(room3.reservations.length).must_equal 1
+        end
+      end
+      
+      describe "find_reservations method" do
+        it "Finds confirmed reservations for a particular date" do      
+          manager.make_reservation(check_in: "August 10, 2019", check_out: "August 12, 2019", status: :CONFIRMED)
+          manager.make_reservation(check_in: "August 12, 2019", check_out: "August 20, 2019", status: :CONFIRMED)
+          manager.make_reservation(check_in: "August 10, 2019", check_out: "August 15, 2019", status: :CONFIRMED)
+          manager.make_reservation(check_in: "August 12, 2019", check_out: "August 14, 2019", status: :HOLD)
+          manager.make_reservation(check_in: "August 15, 2019", check_out: "August 16, 2019", status: :CONFIRMED)
+          
+          date = "August 12, 2019"
+          
+          august_12_reservations = manager.find_reservations(date)
+          
+          expect(august_12_reservations).must_be_kind_of Array
+          expect(august_12_reservations.length).must_equal 2
+          
+          august_12_reservations.each do |reservation|
+            reservation.must_be_kind_of Hotel::Reservation
+          end
+        end 
+      end
+    end
+    

@@ -15,6 +15,10 @@ module Hotel
       @reservations = []
     end
     
+    def add_reservation(reservation)
+      reservations << reservation
+    end
+    
     def self.all
       all_rooms = []
       
