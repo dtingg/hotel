@@ -1,8 +1,8 @@
 require_relative "test_helper"
 
 describe "Reservation class" do
-  let (:room5) { Hotel::Room.new(5)}
-  let (:reservation) { Hotel::Reservation.new(1, room5, "August 1, 2019", "August 5, 2019") }
+  let (:room) { Hotel::Room.new(1)}
+  let (:reservation) { Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019") }
   
   describe "initialize method" do
     it "Creates an instance of Reservation" do
@@ -16,7 +16,7 @@ describe "Reservation class" do
     
     it "Keeps track of room" do
       expect(reservation).must_respond_to :room
-      expect(reservation.room).must_equal room5
+      expect(reservation.room).must_equal room
     end
     
     it "Keeps track of check_in" do
@@ -29,6 +29,13 @@ describe "Reservation class" do
       expect(reservation.check_out).must_equal Date.parse("August 5, 2019")
     end
     
+    it "Throws an error if check_in is after check_out" do
+      check_in = "August 5, 2019"
+      check_out = "August 1, 2019"
+      
+      expect { Hotel::Reservation.new(1, room, check_in, check_out) }.must_raise ArgumentError
+    end
+    
     it "Keeps track of status" do
       expect(reservation).must_respond_to :status
     end
@@ -38,7 +45,7 @@ describe "Reservation class" do
     end
     
     it "Keeps track of discount" do
-      reservation = Hotel::Reservation.new(1, room5, "August 1, 2019", "August 5, 2019", :HOLD, 0.25)
+      reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019", :HOLD, 0.25)
       
       expect(reservation).must_respond_to :discount
       expect(reservation.discount).must_equal 0.25
@@ -46,13 +53,6 @@ describe "Reservation class" do
     
     it "Sets a default discount of nil" do
       assert_nil(reservation.discount)
-    end
-    
-    it "Throws an error if check_in is after check_out" do
-      check_in = "August 5, 2019"
-      check_out = "August 1, 2019"
-      
-      expect { Hotel::Reservation.new(1, room5, check_in, check_out) }.must_raise ArgumentError
     end
   end  
   
@@ -62,8 +62,7 @@ describe "Reservation class" do
     end
     
     it "Returns the correct cost if there is a discount" do
-      room = Hotel::Room.new(5)
-      reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019", :HOLD, 0.50)
+      reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019", :CONFIRMED, 0.50)
       
       expect(reservation.total_cost).must_equal 400
     end

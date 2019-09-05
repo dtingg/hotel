@@ -1,9 +1,10 @@
 module Hotel
   
   class BookingManager
-    attr_reader :all_rooms, :all_reservations
+    attr_reader :all_rooms, :all_reservations, :all_blocks
     
     def initialize
+      # This is a list of all of the rooms in the hotel
       @all_rooms = Hotel::Room.all
       @all_reservations = []
       @all_blocks = []
@@ -51,7 +52,7 @@ module Hotel
       rooms = available_rooms(check_in, check_out)
       
       if rooms.length < num_rooms
-        raise ArgumentError.new("There are not enough hotel rooms for a block on those dates.")
+        raise ArgumentError.new("There are not enough hotel rooms for a block of #{num_rooms} on those dates.")
       end
       
       block = Hotel::RoomBlock.new(name, check_in, check_out, num_rooms, discount)
@@ -61,15 +62,17 @@ module Hotel
         block.reservations << reservation
       end  
       
+      all_blocks << block
       return block
     end
     
     # Includes new and current guests, but not people who checked out on that date.
+    # Shows confirmed reservations, but not unconfirmed rooms being held for a room block
     def find_reservations(date)
       day_reservations = all_reservations.select do |reservation|
         start_date = reservation.check_in
         end_date = reservation.check_out
-        (start_date...end_date).include?(Date.parse(date))
+        (start_date...end_date).include?(Date.parse(date)) && reservation.status == :CONFIRMED
       end
       
       return day_reservations
