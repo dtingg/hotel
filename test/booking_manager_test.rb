@@ -49,6 +49,14 @@ describe "BookingManager class" do
       expect(manager.room_available?(check_in: "May 5, 2019", check_out: "May 10, 2019", room: room1)).must_equal false
       expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 15, 2019", room: room1)).must_equal false
     end
+    
+    it "Returns false if the room is being held for a room block" do
+      manager.make_block(name: "Tingg", check_in: "May 1, 2019", check_out: "May 5, 2019", num_rooms: 3, discount: 50)
+      
+      expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 5, 2019", room: room1)).must_equal false
+      expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 5, 2019", room: room2)).must_equal false
+      expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 5, 2019", room: room3)).must_equal false
+    end
   end
   
   describe "available_rooms method" do
@@ -136,12 +144,8 @@ describe "BookingManager class" do
   
   describe "find_block method" do
     it "Finds the correct block reservation" do
-      block1 = manager.make_block(
-        name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
-      )
-      block2 = manager.make_block(
-        name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
-      )
+      manager.make_block(name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+      manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
       
       block = manager.find_block("Tingg")
       
@@ -159,9 +163,10 @@ describe "BookingManager class" do
     
     it "Throws an error if there are no reservations left in a block" do
       manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
-      reservation1 = manager.make_block_reservation("Tingg")
-      reservation2 = manager.make_block_reservation("Tingg")
-      reservation3 = manager.make_block_reservation("Tingg")
+      
+      3.times do
+        manager.make_block_reservation("Tingg")
+      end
       
       expect{ manager.make_block_reservation("Tingg") }.must_raise ArgumentError
     end
@@ -189,8 +194,9 @@ describe "BookingManager class" do
     
     it "Shows confirmed reservations under a room block" do
       manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
-      reservation1 = manager.make_block_reservation("Tingg")
-      reservation2 = manager.make_block_reservation("Tingg")
+      2.times do 
+        manager.make_block_reservation("Tingg")
+      end
       
       expect(manager.find_reservations("August 5, 2019").length).must_equal 2
     end

@@ -51,6 +51,8 @@ module Hotel
     end
     
     # This will find available rooms for you, so you don't need to specify them
+    # You will have to enter a name for your party
+    # Enter discount as a whole number (50 for 50%)
     def make_block(name:, check_in:, check_out:, num_rooms:, discount:)
       rooms = available_rooms(check_in: check_in, check_out: check_out)
       
@@ -72,10 +74,10 @@ module Hotel
     end
     
     def find_block(name)
-      block = all_blocks.find do |block|
+      correct_block = all_blocks.find do |block|
         block.name == name.capitalize
       end
-      return block
+      return correct_block
     end
     
     # Allows you to reserve a room from a hotel block
