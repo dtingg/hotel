@@ -31,16 +31,24 @@ describe "BookingManager class" do
   end
   
   describe "room_available? method" do
-    it "Returns true if a room is available, otherwise it returns false" do
-      manager.make_reservation(check_in: "May 1, 2019", check_out: "May 5, 2019")
-      manager.make_reservation(check_in: "May 8, 2019", check_out: "May 10, 2019")
-      manager.make_reservation(check_in: "May 15, 2019", check_out: "May 20, 2019")
+    it "Returns true if a room is available" do
+      manager.make_reservation(check_in: "May 5, 2019", check_out: "May 10, 2019")
       
-      expect(manager.room_available?(check_in: "April 30, 2019", check_out: "May 1, 2019", room: room1)).must_equal true 
-      expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 2, 2019", room: room1)).must_equal false
-      expect(manager.room_available?(check_in: "May 5, 2019", check_out: "May 8, 2019", room: room1)).must_equal true
-      expect(manager.room_available?(check_in: "May 17, 2019", check_out: "May 18, 2019", room: room1)).must_equal false
-      expect(manager.room_available?(check_in: "May 20, 2019", check_out: "May 21, 2019", room: room1)).must_equal true
+      expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 2, 2019", room: room1)).must_equal true
+      expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 5, 2019", room: room1)).must_equal true
+      expect(manager.room_available?(check_in: "May 10, 2019", check_out: "May 15, 2019", room: room1)).must_equal true
+      expect(manager.room_available?(check_in: "May 15, 2019", check_out: "May 20, 2019", room: room1)).must_equal true
+      
+    end
+    
+    it "Returns false if a room is unavailable" do
+      manager.make_reservation(check_in: "May 5, 2019", check_out: "May 10, 2019")
+      
+      expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 6, 2019", room: room1)).must_equal false
+      expect(manager.room_available?(check_in: "May 9, 2019", check_out: "May 12, 2019", room: room1)).must_equal false
+      expect(manager.room_available?(check_in: "May 7, 2019", check_out: "May 8, 2019", room: room1)).must_equal false
+      expect(manager.room_available?(check_in: "May 5, 2019", check_out: "May 10, 2019", room: room1)).must_equal false
+      expect(manager.room_available?(check_in: "May 1, 2019", check_out: "May 15, 2019", room: room1)).must_equal false
     end
   end
   
