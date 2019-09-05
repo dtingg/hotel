@@ -25,6 +25,7 @@ module Hotel
       reservations << reservation
     end
     
+    # This allows you to view the available rooms left in a block
     def available_rooms
       available_rooms = reservations.select do |reservation|
         reservation.status == :HOLD

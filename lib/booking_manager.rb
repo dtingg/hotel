@@ -59,28 +59,49 @@ module Hotel
       end
       
       block = Hotel::RoomBlock.new(
-        name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount)
-        
-        num_rooms.times do
-          reservation = make_reservation(check_in: check_in, check_out: check_out, status: :HOLD, discount: discount)
-          block.add_reservation(reservation)
-        end  
-        
-        all_blocks << block
-        return block
+        name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount
+      )
+      
+      num_rooms.times do
+        reservation = make_reservation(check_in: check_in, check_out: check_out, status: :HOLD, discount: discount)
+        block.add_reservation(reservation)
+      end  
+      
+      all_blocks << block
+      return block
+    end
+    
+    def find_block(name)
+      block = all_blocks.find do |block|
+        block.name == name.capitalize
+      end
+      return block
+    end
+    
+    # Allows you to reserve a room from a hotel block
+    def make_block_reservation(name)
+      block = find_block(name)
+      reservation = block.available_rooms[0]
+      
+      if !reservation
+        raise ArgumentError.new("There are no more available rooms from that block.")
       end
       
-      # Includes new and current guests, but not people who checked out on that date.
-      # Shows confirmed reservations, but not unconfirmed rooms being held for a room block
-      def find_reservations(date)
-        day_reservations = all_reservations.select do |reservation|
-          start_date = reservation.check_in
-          end_date = reservation.check_out
-          (start_date...end_date).include?(Date.parse(date)) && reservation.status == :CONFIRMED
-        end
-        
-        return day_reservations
+      reservation.confirm_reservation
+      
+      return reservation
+    end
+    
+    # Includes new and current guests, but not people who checked out on that date.
+    # Shows confirmed reservations, but not unconfirmed rooms being held for a room block
+    def find_reservations(date)
+      day_reservations = all_reservations.select do |reservation|
+        start_date = reservation.check_in
+        end_date = reservation.check_out
+        (start_date...end_date).include?(Date.parse(date)) && reservation.status == :CONFIRMED
       end
+      
+      return day_reservations
     end
   end
-  
+end

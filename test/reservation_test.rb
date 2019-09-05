@@ -50,40 +50,40 @@ describe "Reservation class" do
     
     it "Keeps track of discount" do
       reservation = Hotel::Reservation.new(
-        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD, discount: 0.25)
-        
-        expect(reservation).must_respond_to :discount
-        expect(reservation.discount).must_equal 0.25
-      end
+        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD, discount: 0.25
+      )
       
-      it "Sets a default discount of nil" do
-        assert_nil(reservation.discount)
-      end
-    end  
-    
-    describe "confirm_reservation method" do
-      it "Changes the status to confirmed" do
-        reservation = Hotel::Reservation.new(
-          id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD
-        )
-        
-        reservation.confirm_reservation
-        
-        expect(reservation.status).must_equal :CONFIRMED
-      end
+      expect(reservation).must_respond_to :discount
+      expect(reservation.discount).must_equal 0.25
     end
     
-    describe "total_cost method" do
-      it "Returns the cost for a reservation" do
-        expect(reservation.total_cost).must_equal 800
-      end
+    it "Sets a default discount of nil" do
+      assert_nil(reservation.discount)
+    end
+  end  
+  
+  describe "confirm_reservation method" do
+    it "Changes the status to confirmed" do
+      reservation = Hotel::Reservation.new(
+        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD
+      )
+      reservation.confirm_reservation
       
-      it "Returns the correct cost if there is a discount" do
-        reservation = Hotel::Reservation.new(
-          id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :CONFIRMED, discount: 0.50)
-          
-          expect(reservation.total_cost).must_equal 400
-        end
-      end
+      expect(reservation.status).must_equal :CONFIRMED
+    end
+  end
+  
+  describe "total_cost method" do
+    it "Returns the cost for a reservation" do
+      expect(reservation.total_cost).must_equal 800
     end
     
+    it "Returns the correct cost if there is a discount" do
+      reservation = Hotel::Reservation.new(
+        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :CONFIRMED, discount: 0.50)
+        
+        expect(reservation.total_cost).must_equal 400
+      end
+    end
+  end
+  

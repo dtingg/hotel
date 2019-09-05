@@ -1,11 +1,6 @@
 require_relative "test_helper"
 
 describe "RoomBlock class" do
-  let (:room1) { Hotel::Room.new(1) }
-  let (:room2) { Hotel::Room.new(2) }
-  let (:room3) { Hotel::Room.new(3) }
-  let (:room4) { Hotel::Room.new(4) }
-  let (:room5) { Hotel::Room.new(5) }
   let (:block) { 
     Hotel::RoomBlock.new(
       name: "Wright", check_in: "August 1, 2019", check_out: "August 5, 2019", num_rooms: 3, discount: 50
