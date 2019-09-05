@@ -10,7 +10,7 @@ module Hotel
       @all_blocks = []
     end
     
-    def room_available?(check_in, check_out, room)
+    def room_available?(check_in:, check_out:, room:)
       room.reservations.each do |reservation|
         day = Date.parse(check_in)
         last_day = Date.parse(check_out)
@@ -23,42 +23,44 @@ module Hotel
       return true
     end
     
-    def available_rooms(check_in, check_out)
+    def available_rooms(check_in:, check_out:)
       available_rooms = []
       
       all_rooms.each do |room|
-        result = room_available?(check_in, check_out, room)        
+        result = room_available?(check_in: check_in, check_out: check_out, room: room)        
         available_rooms << room if result
       end        
       return available_rooms
     end
     
-    def make_reservation(check_in, check_out, status = :CONFIRMED, discount = nil)
+    def make_reservation(check_in:, check_out:, status: :CONFIRMED, discount: nil)
       id = all_reservations.length + 1
-      room = available_rooms(check_in, check_out)[0]
+      room = available_rooms(check_in: check_in, check_out: check_out)[0]
       
       if !room
         raise ArgumentError.new("There are no available rooms for those dates.")
       end
       
-      reservation = Hotel::Reservation.new(id, room, check_in, check_out, status, discount)
+      reservation = Hotel::Reservation.new(
+      id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount)
       all_reservations << reservation
       room.reservations << reservation
       
       return reservation
     end
     
-    def make_block(name, check_in, check_out, num_rooms, discount)
-      rooms = available_rooms(check_in, check_out)
+    def make_block(name:, check_in:, check_out:, num_rooms:, discount:)
+      rooms = available_rooms(check_in: check_in, check_out: check_out)
       
       if rooms.length < num_rooms
         raise ArgumentError.new("There are not enough hotel rooms for a block of #{num_rooms} on those dates.")
       end
       
-      block = Hotel::RoomBlock.new(name, check_in, check_out, num_rooms, discount)
+      block = Hotel::RoomBlock.new(
+      name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount)
       
       num_rooms.times do
-        reservation = make_reservation(check_in, check_out, :HOLD, discount)
+        reservation = make_reservation(check_in: check_in, check_out: check_out, status: :HOLD, discount: discount)
         block.reservations << reservation
       end  
       

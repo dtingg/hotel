@@ -2,7 +2,9 @@ require_relative "test_helper"
 
 describe "Reservation class" do
   let (:room) { Hotel::Room.new(1)}
-  let (:reservation) { Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019") }
+  let (:reservation) { Hotel::Reservation.new(
+  id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019"
+  ) }
   
   describe "initialize method" do
     it "Creates an instance of Reservation" do
@@ -33,7 +35,7 @@ describe "Reservation class" do
       check_in = "August 5, 2019"
       check_out = "August 1, 2019"
       
-      expect { Hotel::Reservation.new(1, room, check_in, check_out) }.must_raise ArgumentError
+      expect { Hotel::Reservation.new(id: 1, room: room, check_in: check_in, check_out: check_out) }.must_raise ArgumentError
     end
     
     it "Keeps track of status" do
@@ -45,7 +47,8 @@ describe "Reservation class" do
     end
     
     it "Keeps track of discount" do
-      reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019", :HOLD, 0.25)
+      reservation = Hotel::Reservation.new(
+      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD, discount: 0.25)
       
       expect(reservation).must_respond_to :discount
       expect(reservation.discount).must_equal 0.25
@@ -62,7 +65,8 @@ describe "Reservation class" do
     end
     
     it "Returns the correct cost if there is a discount" do
-      reservation = Hotel::Reservation.new(1, room, "August 1, 2019", "August 5, 2019", :CONFIRMED, 0.50)
+      reservation = Hotel::Reservation.new(
+      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :CONFIRMED, discount: 0.50)
       
       expect(reservation.total_cost).must_equal 400
     end
