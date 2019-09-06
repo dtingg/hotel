@@ -156,8 +156,8 @@ module Hotel
     
     def block_from_csv(record)
       block = Hotel::RoomBlock.new(
-        name: record["name"],
-        check_in: record["check_in"],
+        name: record["name"], 
+        check_in: record["check_in"], 
         check_out: record["check_out"],
         num_rooms: record["num_rooms"],
         discount: record["discount"]      
@@ -171,24 +171,12 @@ module Hotel
     end
     
     def load_files(reservations_file, blocks_file)
-      reservations = CSV.read(
-        reservations_file,
-        headers: true,
-        converters: :numeric
-      ).map { 
-        |record| reservation_from_csv(record)
-      }
-      
+      reservations = CSV.read(reservations_file, headers: true, converters: :numeric).map 
+      { |record| reservation_from_csv(record) }
       @all_reservations = reservations
       
-      blocks = CSV.read(
-        blocks_file,
-        headers: true,
-        converters: :numeric
-      ).map {
-        |record| block_from_csv(record)
-      }
-      
+      blocks = CSV.read(blocks_file, headers: true, converters: :numeric).map 
+      { |record| block_from_csv(record) }
       @all_blocks = blocks
     end  
   end
