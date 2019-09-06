@@ -22,24 +22,11 @@ module Hotel
       room.change_cost(new_cost)
     end
     
-    def room_available?(check_in:, check_out:, room:)
-      room.reservations.each do |reservation|
-        day = Date.parse(check_in)
-        last_day = Date.parse(check_out)
-        
-        while day != last_day
-          return false if (reservation.check_in...reservation.check_out).include?(day)
-          day += 1          
-        end
-      end
-      return true
-    end
-    
     def available_rooms(check_in:, check_out:)
       available_rooms = []
       
       all_rooms.each do |room|
-        result = room_available?(check_in: check_in, check_out: check_out, room: room)        
+        result = room.available?(check_in: check_in, check_out: check_out)        
         available_rooms << room if result
       end        
       return available_rooms

@@ -19,6 +19,19 @@ module Hotel
       @nightly_cost = new_cost
     end
     
+    def available?(check_in:, check_out:)
+      reservations.each do |reservation|
+        day = Date.parse(check_in)
+        last_day = Date.parse(check_out)
+        
+        while day != last_day
+          return false if (reservation.check_in...reservation.check_out).include?(day)
+          day += 1          
+        end
+      end
+      return true
+    end
+    
     def add_reservation(reservation)
       reservations << reservation
     end

@@ -41,6 +41,29 @@ describe "Room class" do
     end
   end
   
+  describe "available? method" do
+    it "Returns true if a room is available" do
+      reservation = Hotel::Reservation.new(id: 1, room: room, check_in: "May 5, 2019", check_out: "May 10, 2019")
+      room.add_reservation(reservation)
+      
+      expect(room.available?(check_in: "May 1, 2019", check_out: "May 2, 2019")).must_equal true
+      expect(room.available?(check_in: "May 1, 2019", check_out: "May 5, 2019")).must_equal true
+      expect(room.available?(check_in: "May 10, 2019", check_out: "May 15, 2019")).must_equal true
+      expect(room.available?(check_in: "May 15, 2019", check_out: "May 20, 2019")).must_equal true
+    end
+    
+    it "Returns false if a room is unavailable" do
+      reservation = Hotel::Reservation.new(id: 1, room: room, check_in: "May 5, 2019", check_out: "May 10, 2019")
+      room.add_reservation(reservation)
+      
+      expect(room.available?(check_in: "May 1, 2019", check_out: "May 6, 2019")).must_equal false
+      expect(room.available?(check_in: "May 9, 2019", check_out: "May 12, 2019")).must_equal false
+      expect(room.available?(check_in: "May 7, 2019", check_out: "May 8, 2019")).must_equal false
+      expect(room.available?(check_in: "May 5, 2019", check_out: "May 10, 2019")).must_equal false
+      expect(room.available?(check_in: "May 1, 2019", check_out: "May 15, 2019")).must_equal false
+    end
+  end
+  
   describe "add_reservation method" do
     it "Adds a reservation to the reservations array" do
       reservation = Hotel::Reservation.new(id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019")
