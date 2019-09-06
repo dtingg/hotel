@@ -54,7 +54,7 @@ module Hotel
       end
       
       reservation = Hotel::Reservation.new(
-      id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount
+        id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount
       )
       all_reservations << reservation
       room.add_reservation(reservation)
@@ -73,7 +73,7 @@ module Hotel
       end
       
       block = Hotel::RoomBlock.new(
-      name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount
+        name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount
       )
       
       num_rooms.times do
@@ -116,6 +116,24 @@ module Hotel
       end
       
       return day_reservations
+    end
+    
+    def save_reservations(filename)
+      CSV.open(filename, "w") do |file|
+        headers = ["id", "room", "check_in", "check_out", "status", "discount"]
+        
+        file << headers
+        
+        
+        all_reservations.each do |reservation|
+          row = [
+            reservation.id, reservation.room.id, 
+            reservation.check_in, reservation.check_out, 
+            reservation.status, reservation.discount
+          ]
+          file << row  
+        end
+      end
     end
   end
 end

@@ -121,7 +121,7 @@ describe "BookingManager class" do
   describe "make_block method" do
     it "Creates a block reservation" do
       block = manager.make_block(
-      name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
+        name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
       )
       
       expect(block).must_be_kind_of Hotel::RoomBlock
@@ -134,88 +134,105 @@ describe "BookingManager class" do
       manager.make_block(name: "Johns", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 5, discount: 50)
       manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 5, discount: 50)
       
-      expect{ 
-      manager.make_block(
-      name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
-      ) 
-    }.must_raise ArgumentError
-  end
-  
-  it "Throws an error if check_in date is after check_out date" do
-    expect{ 
-    manager.make_block(
-    name: "Tingg", check_in: "August 15, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
-    )
-  }.must_raise ArgumentError
-end
-
-it "Makes single reservations for each room in the block" do
-  manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
-  
-  expect(manager.all_reservations.length).must_equal 3
-  expect(room1.reservations.length).must_equal 1
-  expect(room2.reservations.length).must_equal 1
-  expect(room3.reservations.length).must_equal 1
-end
-end
-
-describe "find_block method" do
-  it "Finds the correct block reservation" do
-    manager.make_block(name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
-    manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
-    
-    block = manager.find_block("Tingg")
-    
-    expect(block.name).must_equal "Tingg"
-  end
-end
-
-describe "make_block_reservation method" do
-  it "Allows you to confirm a reservation in a block" do
-    manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
-    reservation1 = manager.make_block_reservation("Tingg")
-    
-    expect(reservation1.status).must_equal :CONFIRMED
-  end
-  
-  it "Throws an error if there are no reservations left in a block" do
-    manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
-    
-    3.times do
-      manager.make_block_reservation("Tingg")
+      expect{ manager.make_block(
+        name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
+        ) }.must_raise ArgumentError
+      end
+      
+      it "Throws an error if check_in date is after check_out date" do
+        expect{ manager.make_block(
+          name: "Tingg", check_in: "August 15, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
+          ) }.must_raise ArgumentError
+        end
+        
+        it "Makes single reservations for each room in the block" do
+          manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          
+          expect(manager.all_reservations.length).must_equal 3
+          expect(room1.reservations.length).must_equal 1
+          expect(room2.reservations.length).must_equal 1
+          expect(room3.reservations.length).must_equal 1
+        end
+      end
+      
+      describe "find_block method" do
+        it "Finds the correct block reservation" do
+          manager.make_block(name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          
+          block = manager.find_block("Tingg")
+          
+          expect(block.name).must_equal "Tingg"
+        end
+      end
+      
+      describe "make_block_reservation method" do
+        it "Allows you to confirm a reservation in a block" do
+          manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          reservation1 = manager.make_block_reservation("Tingg")
+          
+          expect(reservation1.status).must_equal :CONFIRMED
+        end
+        
+        it "Throws an error if there are no reservations left in a block" do
+          manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          
+          3.times do
+            manager.make_block_reservation("Tingg")
+          end
+          
+          expect{ manager.make_block_reservation("Tingg") }.must_raise ArgumentError
+        end
+      end
+      
+      describe "find_reservations method" do
+        it "Finds confirmed reservations for a particular date" do      
+          manager.make_reservation(check_in: "August 10, 2019", check_out: "August 12, 2019", status: :CONFIRMED)
+          manager.make_reservation(check_in: "August 12, 2019", check_out: "August 20, 2019", status: :CONFIRMED)
+          manager.make_reservation(check_in: "August 10, 2019", check_out: "August 15, 2019", status: :CONFIRMED)
+          manager.make_reservation(check_in: "August 12, 2019", check_out: "August 14, 2019", status: :HOLD)
+          manager.make_reservation(check_in: "August 15, 2019", check_out: "August 16, 2019", status: :CONFIRMED)
+          
+          date = "August 12, 2019"
+          
+          august_12_reservations = manager.find_reservations(date)
+          
+          expect(august_12_reservations).must_be_kind_of Array
+          expect(august_12_reservations.length).must_equal 2
+          
+          august_12_reservations.each do |reservation|
+            reservation.must_be_kind_of Hotel::Reservation
+          end
+        end
+        
+        it "Shows confirmed reservations under a room block" do
+          manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          2.times do 
+            manager.make_block_reservation("Tingg")
+          end
+          
+          expect(manager.find_reservations("August 5, 2019").length).must_equal 2
+        end
+      end 
+      
+      describe "save_reservations method" do
+        it "Saves all hotel reservations to a csv file" do
+          manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          manager.make_block_reservation("Tingg")
+          manager.make_reservation(check_in: "August 5, 2019", check_out: "August 10, 2019")
+          manager.save_reservations("all_reservations.csv")
+          
+          expected_csv = 
+          "id,room,check_in,check_out,status,discount\n" \
+          "1,1,2019-08-05,2019-08-10,CONFIRMED,50\n" \
+          "2,2,2019-08-05,2019-08-10,HOLD,50\n" \
+          "3,3,2019-08-05,2019-08-10,HOLD,50\n" \
+          "4,4,2019-08-05,2019-08-10,CONFIRMED,\n"
+          
+          actual_csv = File.open("all_reservations.csv").read
+          
+          expect(expected_csv == actual_csv).must_equal true 
+        end
+      end
     end
     
-    expect{ manager.make_block_reservation("Tingg") }.must_raise ArgumentError
-  end
-end
-
-describe "find_reservations method" do
-  it "Finds confirmed reservations for a particular date" do      
-    manager.make_reservation(check_in: "August 10, 2019", check_out: "August 12, 2019", status: :CONFIRMED)
-    manager.make_reservation(check_in: "August 12, 2019", check_out: "August 20, 2019", status: :CONFIRMED)
-    manager.make_reservation(check_in: "August 10, 2019", check_out: "August 15, 2019", status: :CONFIRMED)
-    manager.make_reservation(check_in: "August 12, 2019", check_out: "August 14, 2019", status: :HOLD)
-    manager.make_reservation(check_in: "August 15, 2019", check_out: "August 16, 2019", status: :CONFIRMED)
-    
-    date = "August 12, 2019"
-    
-    august_12_reservations = manager.find_reservations(date)
-    
-    expect(august_12_reservations).must_be_kind_of Array
-    expect(august_12_reservations.length).must_equal 2
-    
-    august_12_reservations.each do |reservation|
-      reservation.must_be_kind_of Hotel::Reservation
-    end
-  end
-  
-  it "Shows confirmed reservations under a room block" do
-    manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
-    2.times do 
-      manager.make_block_reservation("Tingg")
-    end
-    
-    expect(manager.find_reservations("August 5, 2019").length).must_equal 2
-  end
-end 
-end
