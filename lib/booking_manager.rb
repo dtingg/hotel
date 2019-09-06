@@ -10,6 +10,18 @@ module Hotel
       @all_blocks = []
     end
     
+    def find_room(room_num)
+      correct_room = all_rooms.find do |room|
+        room.id == room_num
+      end
+      return correct_room
+    end
+    
+    def change_room_cost(room_num:, new_cost:)
+      room = find_room(room_num)
+      room.change_cost(new_cost)
+    end
+    
     def room_available?(check_in:, check_out:, room:)
       room.reservations.each do |reservation|
         day = Date.parse(check_in)
@@ -42,7 +54,7 @@ module Hotel
       end
       
       reservation = Hotel::Reservation.new(
-        id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount
+      id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount
       )
       all_reservations << reservation
       room.add_reservation(reservation)
@@ -61,7 +73,7 @@ module Hotel
       end
       
       block = Hotel::RoomBlock.new(
-        name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount
+      name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount
       )
       
       num_rooms.times do

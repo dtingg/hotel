@@ -15,6 +15,10 @@ module Hotel
       @reservations = []
     end
     
+    def change_cost(new_cost)
+      @nightly_cost = new_cost
+    end
+    
     def add_reservation(reservation)
       reservations << reservation
     end
