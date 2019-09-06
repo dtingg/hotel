@@ -9,7 +9,16 @@ require_relative "lib/room"
 def print_menu
   puts "\nMAIN MENU"
   
-  menu_options = ["Make a reservation", "Make a block reservation", "Exit"]
+  menu_options = [
+    "List rooms", 
+    "Change a room price",
+    "Make a reservation", 
+    "Make a block reservation", 
+    "Confirm a block reservation", 
+    "Save data to file", 
+    "Load data from file", 
+    "Exit"
+  ]
   
   menu_options.each_with_index do |option, index|
     puts "#{index + 1}. #{option}"
@@ -29,13 +38,21 @@ def main
     print "\nPlease choose a menu number: "
     answer = gets.chomp.to_i
     
-    until (1..3).include?(answer)
+    until (1..8).include?(answer)
       print "Please enter a valid option: "
       answer = gets.chomp.to_i
     end
     
     case answer
     when 1
+      puts "\nALL HOTEL ROOMS"
+      manager.all_rooms.each do |room|
+        print "Room #{room.id}, Nightly Cost: $#{"%.2f" % room.nightly_cost}\n"
+      end
+    when 2
+      "print change a room price"
+    when 3
+      
       print "Check in date: "
       check_in = gets.chomp
       
@@ -51,13 +68,18 @@ def main
       puts "\tCheck out date: #{reservation.check_out}"
       puts "\tStatus: #{reservation.status}"
       
-    when 2
-      puts "Not done yet"
-    when 3
+    when 4
+      puts "Make a block reservation"
+    when 5
+      puts "Confirm a block reservation"
+    when 6
+      puts "Save data to file"
+    when 7
+      puts "Load data from file "
+    when 8
       puts "Goodbye!"
       play = false    
     end
-    
   end
 end
 
