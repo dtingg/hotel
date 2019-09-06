@@ -234,5 +234,24 @@ describe "BookingManager class" do
           expect(expected_csv == actual_csv).must_equal true 
         end
       end
+      
+      describe "save_blocks method" do
+        it "Saves all blocks to a csv file" do
+          manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          manager.make_block(name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
+          manager.make_block(name: "Blair", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 25)
+          manager.save_blocks("all_blocks.csv")
+          
+          expected_csv = 
+          "name,check_in,check_out,num_rooms,discount,reservations\n" \
+          "Tingg,2019-08-05,2019-08-10,3,0.5,1;2;3\n" \
+          "Wright,2019-08-05,2019-08-10,3,0.5,4;5;6\n" \
+          "Blair,2019-08-05,2019-08-10,3,0.25,7;8;9\n"
+          
+          actual_csv = File.open("all_blocks.csv").read
+          
+          expect(expected_csv == actual_csv).must_equal true
+        end
+      end
     end
     

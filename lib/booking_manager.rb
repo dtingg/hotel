@@ -135,5 +135,25 @@ module Hotel
         end
       end
     end
+    
+    def save_blocks(filename)
+      CSV.open(filename, "w") do |file|
+        headers = ["name", "check_in", "check_out", "num_rooms", "discount", "reservations"]
+        
+        file << headers
+        
+        all_blocks.each do |block|
+          reservations = block.reservations.map do |reservation|
+            reservation.id
+          end
+          
+          row = [
+            block.name, block.check_in, block.check_out, 
+            block.num_rooms, block.discount, reservations.join(";")
+          ]
+          file << row  
+        end
+      end
+    end
   end
 end
