@@ -171,12 +171,16 @@ module Hotel
     end
     
     def load_files(reservations_file, blocks_file)
-      reservations = CSV.read(reservations_file, headers: true, converters: :numeric).map 
-      { |record| reservation_from_csv(record) }
+      reservations = CSV.read(reservations_file, headers: true, converters: :numeric).map { 
+        |record| reservation_from_csv(record) 
+      }
+      
       @all_reservations = reservations
       
-      blocks = CSV.read(blocks_file, headers: true, converters: :numeric).map 
-      { |record| block_from_csv(record) }
+      blocks = CSV.read(blocks_file, headers: true, converters: :numeric).map { 
+        |record| block_from_csv(record) 
+      }
+      
       @all_blocks = blocks
     end  
   end
