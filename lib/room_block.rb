@@ -33,5 +33,18 @@ module Hotel
       
       return available_rooms
     end
+    
+    # Confirm a reservation in a block
+    def confirm_reservation
+      reservation = available_rooms[0]
+      
+      if !reservation
+        raise ArgumentError.new("There are no more available rooms from that block.")
+      end
+      
+      reservation.confirm_reservation
+      
+      return reservation
+    end
   end
 end

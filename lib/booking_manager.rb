@@ -82,14 +82,7 @@ module Hotel
     # Allows you to reserve a room from a hotel block
     def make_block_reservation(name)
       block = find_block(name)
-      reservation = block.available_rooms[0]
-      
-      if !reservation
-        raise ArgumentError.new("There are no more available rooms from that block.")
-      end
-      
-      reservation.confirm_reservation
-      
+      reservation = block.confirm_reservation
       return reservation
     end
     
