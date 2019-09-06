@@ -17,6 +17,13 @@ module Hotel
       return correct_room
     end
     
+    def find_reservation(reservation_num)
+      correct_reservation = all_reservations.find do |reservation|
+        reservation.id == reservation_num
+      end
+      return correct_reservation
+    end
+    
     def change_room_cost(room_num:, new_cost:)
       room = find_room(room_num)
       room.change_cost(new_cost)
@@ -104,7 +111,6 @@ module Hotel
         
         file << headers
         
-        
         all_reservations.each do |reservation|
           row = [
             reservation.id, reservation.room.id, 
@@ -135,5 +141,55 @@ module Hotel
         end
       end
     end
+    
+    def reservation_from_csv(record)
+      reservation = Hotel::Reservation.new(
+        id: record["id"],
+        room: find_room(record["room"].to_i),
+        check_in: record["check_in"],
+        check_out: record["check_out"],
+        status: record["status"],
+        discount: record["discount"]
+      )
+      return reservation
+    end
+    
+    def block_from_csv(record)
+      block = Hotel::RoomBlock.new(
+        name: record["name"],
+        check_in: record["check_in"],
+        check_out: record["check_out"],
+        num_rooms: record["num_rooms"],
+        discount: record["discount"]      
+      )
+      
+      block.reservations = record["reservations"].split(";").map do |number|
+        find_reservation(number.to_i)
+      end
+      
+      return block
+    end
+    
+    def load_files(reservations_file, blocks_file)
+      reservations = CSV.read(
+        reservations_file,
+        headers: true,
+        converters: :numeric
+      ).map { 
+        |record| reservation_from_csv(record)
+      }
+      
+      @all_reservations = reservations
+      
+      blocks = CSV.read(
+        blocks_file,
+        headers: true,
+        converters: :numeric
+      ).map {
+        |record| block_from_csv(record)
+      }
+      
+      @all_blocks = blocks
+    end  
   end
 end

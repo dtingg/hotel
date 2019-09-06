@@ -228,4 +228,19 @@ describe "BookingManager class" do
       expect(expected_csv == actual_csv).must_equal true
     end
   end
+  
+  describe "load_files method" do
+    it "Loads data from csv files" do
+      manager.load_files("test_reservations.csv", "test_blocks.csv")
+      
+      expect(manager.all_reservations.length).must_equal 12
+      expect(manager.all_reservations.first.id).must_equal 1
+      expect(manager.all_reservations.first.room.id).must_equal 1
+      
+      expect(manager.all_blocks.length).must_equal 3
+      expect(manager.all_blocks.first.name).must_equal "Tingg"
+      expect(manager.all_blocks.first.reservations.length).must_equal 3
+      expect(manager.all_blocks.first.reservations.first.id).must_equal 1
+    end
+  end
 end

@@ -1,7 +1,8 @@
 module Hotel
   
   class RoomBlock
-    attr_reader :name, :check_in, :check_out, :num_rooms, :discount, :reservations
+    attr_reader :name, :check_in, :check_out, :num_rooms, :discount
+    attr_accessor :reservations
     
     def initialize(name: , check_in: , check_out: , num_rooms: , discount:)
       @name = name.capitalize  
