@@ -199,6 +199,30 @@ describe "BookingManager class" do
     end
   end 
   
+  describe "save_rooms method" do
+    it "Saves all rooms to a csv file" do
+      manager.change_room_cost(room_num: 1, new_cost: 100)
+      manager.change_room_cost(room_num: 2, new_cost: 50)
+      manager.make_reservation(check_in: "August 1, 2019", check_out: "August 4, 2019")
+      manager.make_reservation(check_in: "August 5, 2019", check_out: "August 10, 2019")
+      manager.make_reservation(check_in: "August 1, 2019", check_out: "August 4, 2019")
+      
+      
+      manager.save_rooms("all_rooms.csv")
+      
+      expected_csv = 
+      "id,nightly_cost,reservations\n" \
+      "1,100,1;2\n2,50,3\n3,200,\n4,200,\n5,200,\n" \
+      "6,200,\n7,200,\n8,200,\n9,200,\n10,200,\n" \
+      "11,200,\n12,200,\n13,200,\n14,200,\n15,200,\n" \
+      "16,200,\n17,200,\n18,200,\n19,200,\n20,200,\n"
+      
+      actual_csv = File.open("all_rooms.csv").read
+      
+      expect(expected_csv == actual_csv).must_equal true
+    end
+  end
+  
   describe "save_reservations method" do
     it "Saves all hotel reservations to a csv file" do
       manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)

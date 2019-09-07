@@ -105,6 +105,28 @@ module Hotel
       return day_reservations
     end
     
+    def save_rooms(filename)
+      CSV.open(filename, "w") do |file|
+        headers = ["id", "nightly_cost", "reservations"]
+        file << headers
+        
+        all_rooms.each do |room|
+          reservations = room.reservations.map do |reservation|
+            reservation.id
+          end
+          
+          if reservations == []
+            reservation_list = nil
+          else
+            reservation_list = reservations.join(";")
+          end
+          
+          row = [room.id, room.nightly_cost, reservation_list]
+          file << row
+        end
+      end
+    end
+    
     def save_reservations(filename)
       CSV.open(filename, "w") do |file|
         headers = ["id", "room", "check_in", "check_out", "status", "discount"]
