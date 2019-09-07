@@ -71,7 +71,7 @@ module Hotel
       )
       
       num_rooms.times do
-        reservation = make_reservation(check_in: check_in, check_out: check_out, status: :HOLD, discount: discount)
+        reservation = make_reservation(check_in: check_in, check_out: check_out, status: :HOLD, discount: block.discount)
         block.add_reservation(reservation)
       end  
       
@@ -95,7 +95,7 @@ module Hotel
     
     # Includes new and current guests, but not people who checked out on that date.
     # Shows confirmed reservations, but not unconfirmed rooms being held for a room block
-    def find_reservations(date)
+    def find_day_reservations(date)
       day_reservations = all_reservations.select do |reservation|
         start_date = reservation.check_in
         end_date = reservation.check_out
@@ -108,7 +108,6 @@ module Hotel
     def save_reservations(filename)
       CSV.open(filename, "w") do |file|
         headers = ["id", "room", "check_in", "check_out", "status", "discount"]
-        
         file << headers
         
         all_reservations.each do |reservation|

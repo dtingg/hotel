@@ -2,11 +2,7 @@ require_relative "test_helper"
 
 describe "Reservation class" do
   let (:room) { Hotel::Room.new(1)}
-  let (:reservation) { 
-    Hotel::Reservation.new(
-      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019"
-    ) 
-  }
+  let (:reservation) { Hotel::Reservation.new(id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019") }
   
   describe "initialize method" do
     it "Creates an instance of Reservation" do

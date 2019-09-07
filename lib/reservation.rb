@@ -24,6 +24,7 @@ module Hotel
     def total_cost
       nights = check_out - check_in
       subtotal = nights * room.nightly_cost
+      
       total = discount ? subtotal - (subtotal * discount) : subtotal
       return total
     end

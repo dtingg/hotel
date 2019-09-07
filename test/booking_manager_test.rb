@@ -38,6 +38,15 @@ describe "BookingManager class" do
     end
   end
   
+  describe "find_reservation method" do
+    it "Find the correct reservation by ID" do
+      manager.make_reservation(check_in: "August 9, 2019", check_out: "August 12, 2019")
+      reservation = manager.find_reservation(1)
+      
+      expect(reservation.id).must_equal 1
+    end
+  end
+  
   describe "change_room_cost method" do
     it "Allows you to change a room's cost" do
       room5 = manager.find_room(5)
@@ -146,7 +155,7 @@ describe "BookingManager class" do
       manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
       reservation1 = manager.make_block_reservation("Tingg")
       
-      expect(reservation1.status).must_equal :CONFIRMED
+      expect(reservation1.status).must_equal :CONFIRMED      
     end
     
     it "Throws an error if there are no reservations left in a block" do
@@ -160,7 +169,7 @@ describe "BookingManager class" do
     end
   end
   
-  describe "find_reservations method" do
+  describe "find_day_reservations method" do
     it "Finds confirmed reservations for a particular date" do      
       manager.make_reservation(check_in: "August 10, 2019", check_out: "August 12, 2019", status: :CONFIRMED)
       manager.make_reservation(check_in: "August 12, 2019", check_out: "August 20, 2019", status: :CONFIRMED)
@@ -170,7 +179,7 @@ describe "BookingManager class" do
       
       date = "August 12, 2019"
       
-      august_12_reservations = manager.find_reservations(date)
+      august_12_reservations = manager.find_day_reservations(date)
       
       expect(august_12_reservations).must_be_kind_of Array
       expect(august_12_reservations.length).must_equal 2
@@ -186,7 +195,7 @@ describe "BookingManager class" do
         manager.make_block_reservation("Tingg")
       end
       
-      expect(manager.find_reservations("August 5, 2019").length).must_equal 2
+      expect(manager.find_day_reservations("August 5, 2019").length).must_equal 2
     end
   end 
   
@@ -199,9 +208,9 @@ describe "BookingManager class" do
       
       expected_csv = 
       "id,room,check_in,check_out,status,discount\n" \
-      "1,1,2019-08-05,2019-08-10,CONFIRMED,50\n" \
-      "2,2,2019-08-05,2019-08-10,HOLD,50\n" \
-      "3,3,2019-08-05,2019-08-10,HOLD,50\n" \
+      "1,1,2019-08-05,2019-08-10,CONFIRMED,0.5\n" \
+      "2,2,2019-08-05,2019-08-10,HOLD,0.5\n" \
+      "3,3,2019-08-05,2019-08-10,HOLD,0.5\n" \
       "4,4,2019-08-05,2019-08-10,CONFIRMED,\n"
       
       actual_csv = File.open("all_reservations.csv").read
@@ -231,16 +240,18 @@ describe "BookingManager class" do
   
   describe "load_files method" do
     it "Loads data from csv files" do
-      manager.load_files("test_reservations.csv", "test_blocks.csv")
+      manager.load_files("test/test_reservations.csv", "test/test_blocks.csv")
       
       expect(manager.all_reservations.length).must_equal 12
       expect(manager.all_reservations.first.id).must_equal 1
+      expect(manager.all_reservations.first.discount).must_equal 0.5
       expect(manager.all_reservations.first.room.id).must_equal 1
       
       expect(manager.all_blocks.length).must_equal 3
       expect(manager.all_blocks.first.name).must_equal "Tingg"
       expect(manager.all_blocks.first.reservations.length).must_equal 3
       expect(manager.all_blocks.first.reservations.first.id).must_equal 1
+      expect(manager.all_blocks.first.reservations.first.discount).must_equal 0.5
     end
   end
 end
