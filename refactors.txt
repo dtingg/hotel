@@ -1,0 +1,15 @@
+Dear Future Dianna:
+
+Double check all of your classes and see if you can reduce dependency among them.
+
+The BookingManager class does a lot of work.  Can any of that be moved to another class?
+
+Maybe add more fields to the reservation class like guest name, address, phone number, email?
+
+Maybe add some custom errors.  For example, when someone tries to create a block when there is already a block with that name.
+
+You should probably do some more testing/error handling on main.rb.  
+It works if you use it normally, but there could be some weird edge cases that haven't been accounted for.
+
+Do you want to go back and create another class called DateRange?  
+It could represent the check-in and check-out dates and have methods like number of nights and overlap?
