@@ -244,6 +244,7 @@ describe "BookingManager class" do
       
       expect(manager.all_reservations.length).must_equal 12
       expect(manager.all_reservations.first.id).must_equal 1
+      expect(manager.all_reservations.first.status).must_equal :HOLD
       expect(manager.all_reservations.first.discount).must_equal 0.5
       expect(manager.all_reservations.first.room.id).must_equal 1
       

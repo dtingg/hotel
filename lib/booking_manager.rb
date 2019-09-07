@@ -147,7 +147,7 @@ module Hotel
         room: find_room(record["room"].to_i),
         check_in: record["check_in"],
         check_out: record["check_out"],
-        status: record["status"],
+        status: record["status"].to_sym,
         discount: record["discount"]
       )
       return reservation
