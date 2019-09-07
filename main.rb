@@ -110,7 +110,7 @@ def make_block
   begin
     block = MANAGER.make_block(name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount)
   rescue ArgumentError
-    puts "Those dates are invalid. Please try again."
+    puts "That information is invalid. Please try again."
     return
   end
   
@@ -163,19 +163,19 @@ def daily_reservations
 end
 
 def save_data
-  print "Please enter a filename for the rooms: "
+  print "Please enter a filename for the rooms (Example: all_rooms): "
   rooms_file = gets.chomp
   rooms_filename = rooms_file + ".csv"
   
   MANAGER.save_rooms(rooms_filename)
   
-  print "Please enter a filename for the reservations: "
+  print "Please enter a filename for the reservations (Example: all_reservations): "
   reservations_file = gets.chomp
   reservations_filename = reservations_file + ".csv"
   
   MANAGER.save_reservations(reservations_filename)
   
-  print "Please enter a filename for the room blocks: "
+  print "Please enter a filename for the room blocks (Example: all_blocks): "
   blocks_file = gets.chomp
   blocks_filename = blocks_file + ".csv"
   
@@ -185,14 +185,21 @@ def save_data
 end
 
 def load_data
-  print 'Please enter the filename for reservations (Example: "reservations.csv"): '
+  print "Please enter the filename for rooms (Example: rooms.csv): "
+  rooms_file = gets.chomp
+  
+  print "Please enter the filename for reservations (Example: reservations.csv): "
   reservations_file = gets.chomp
   
-  print 'Please enter the filename for room blocks (Example: "blocks.csv"): '
+  print "Please enter the filename for room blocks (Example: blocks.csv): "
   blocks_file = gets.chomp
   
-  MANAGER.load_files(reservations_file, blocks_file)
-  
+  begin
+    MANAGER.load_files(rooms_file, reservations_file, blocks_file)
+  rescue
+    puts "That file does not exist. Please try again."
+    return
+  end
   puts "Your files were uploaded successfully."
 end
 

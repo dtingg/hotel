@@ -60,6 +60,10 @@ module Hotel
     # You will have to enter a name for your party
     # Enter discount as a whole number (50 for 50%)
     def make_block(name:, check_in:, check_out:, num_rooms:, discount:)
+      if find_block(name)
+        raise ArgumentError.new("There is already a room block under name #{name}.")
+      end
+      
       rooms = available_rooms(check_in: check_in, check_out: check_out)
       
       if rooms.length < num_rooms
