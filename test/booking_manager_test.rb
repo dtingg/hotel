@@ -216,7 +216,7 @@ describe "BookingManager class" do
       manager.make_reservation(check_in: "August 1, 2019", check_out: "August 4, 2019")
       manager.make_reservation(check_in: "August 5, 2019", check_out: "August 10, 2019")
       manager.make_reservation(check_in: "August 1, 2019", check_out: "August 4, 2019")
-      manager.save_rooms("all_rooms.csv")
+      manager.save_rooms("./data/all_rooms.csv")
       
       expected_csv = 
       "id,nightly_cost,reservations\n" \
@@ -225,7 +225,7 @@ describe "BookingManager class" do
       "11,200,\n12,200,\n13,200,\n14,200,\n15,200,\n" \
       "16,200,\n17,200,\n18,200,\n19,200,\n20,200,\n"
       
-      actual_csv = File.open("all_rooms.csv").read
+      actual_csv = File.open("./data/all_rooms.csv").read
       
       expect(expected_csv == actual_csv).must_equal true
     end
@@ -236,7 +236,7 @@ describe "BookingManager class" do
       manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
       manager.make_block_reservation("Tingg")
       manager.make_reservation(check_in: "August 5, 2019", check_out: "August 10, 2019")
-      manager.save_reservations("all_reservations.csv")
+      manager.save_reservations("./data/all_reservations.csv")
       
       expected_csv = 
       "id,room,check_in,check_out,status,discount\n" \
@@ -245,7 +245,7 @@ describe "BookingManager class" do
       "3,3,2019-08-05,2019-08-10,HOLD,0.5\n" \
       "4,4,2019-08-05,2019-08-10,CONFIRMED,\n"
       
-      actual_csv = File.open("all_reservations.csv").read
+      actual_csv = File.open("./data/all_reservations.csv").read
       
       expect(expected_csv == actual_csv).must_equal true 
     end
@@ -256,7 +256,7 @@ describe "BookingManager class" do
       manager.make_block(name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
       manager.make_block(name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50)
       manager.make_block(name: "Blair", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 25)
-      manager.save_blocks("all_blocks.csv")
+      manager.save_blocks("./data/all_blocks.csv")
       
       expected_csv = 
       "name,check_in,check_out,num_rooms,discount,reservations\n" \
@@ -264,7 +264,7 @@ describe "BookingManager class" do
       "Wright,2019-08-05,2019-08-10,3,0.5,4;5;6\n" \
       "Blair,2019-08-05,2019-08-10,3,0.25,7;8;9\n"
       
-      actual_csv = File.open("all_blocks.csv").read
+      actual_csv = File.open("./data/all_blocks.csv").read
       
       expect(expected_csv == actual_csv).must_equal true
     end
