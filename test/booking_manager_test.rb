@@ -206,8 +206,6 @@ describe "BookingManager class" do
       manager.make_reservation(check_in: "August 1, 2019", check_out: "August 4, 2019")
       manager.make_reservation(check_in: "August 5, 2019", check_out: "August 10, 2019")
       manager.make_reservation(check_in: "August 1, 2019", check_out: "August 4, 2019")
-      
-      
       manager.save_rooms("all_rooms.csv")
       
       expected_csv = 

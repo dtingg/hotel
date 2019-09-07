@@ -46,5 +46,18 @@ module Hotel
       
       return all_rooms
     end
+    
+    def self.from_csv(record)
+      room = self.new(id: record["id"], nightly_cost: record["nightly_cost"])
+      
+      begin
+        room_list = record["reservations"].split(";")
+        room.reservations = room_list
+      rescue NoMethodError
+        room.reservations = [record["reservations"]]
+      end
+      
+      return room
+    end
   end
 end

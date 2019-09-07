@@ -11,21 +11,22 @@ MANAGER = Hotel::BookingManager.new
 def print_menu
   puts "\nMAIN MENU"
   
-  menu_options = [
-  "List rooms", 
-  "Change a room price",
-  "Make a reservation", 
-  "Make a block reservation", 
-  "Confirm a reservation under a block", 
-  "List confirmed reservations by day",
-  "Save data to file", 
-  "Load data from file", 
-  "Exit"
-]
-
-menu_options.each_with_index do |option, index|
-  puts "#{index + 1}. #{option}"
-end
+  menu_options = 
+  [
+    "List rooms", 
+    "Change a room price",
+    "Make a reservation", 
+    "Make a block reservation", 
+    "Confirm a reservation under a block", 
+    "List confirmed reservations by day",
+    "Save data to file", 
+    "Load data from file", 
+    "Exit"
+  ]
+  
+  menu_options.each_with_index do |option, index|
+    puts "#{index + 1}. #{option}"
+  end
 end
 
 def list_rooms

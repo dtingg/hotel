@@ -1,7 +1,8 @@
 module Hotel
   
   class Reservation
-    attr_reader :id, :room, :check_in, :check_out, :status, :discount
+    attr_reader :id, :check_in, :check_out, :status, :discount
+    attr_accessor :room
     
     def initialize(id: , room:, check_in:, check_out:, status: :CONFIRMED, discount: nil)
       @id = id
@@ -27,6 +28,19 @@ module Hotel
       
       total = discount ? subtotal - (subtotal * discount) : subtotal
       return total
+    end
+    
+    def self.from_csv(record)
+      reservation = self.new(
+        id: record["id"],
+        # room: find_room(record["room"]),
+        room: record["room"],
+        check_in: record["check_in"],
+        check_out: record["check_out"],
+        status: record["status"].to_sym,
+        discount: record["discount"]
+      )
+      return reservation
     end
   end
 end

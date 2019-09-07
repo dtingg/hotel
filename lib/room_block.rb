@@ -4,7 +4,7 @@ module Hotel
     attr_reader :name, :check_in, :check_out, :num_rooms, :discount
     attr_accessor :reservations
     
-    def initialize(name: , check_in: , check_out: , num_rooms: , discount:)
+    def initialize(name: , check_in: , check_out: , num_rooms: , discount:, reservations: [])
       @name = name.capitalize  
       @check_in = Date.parse(check_in)
       @check_out = Date.parse(check_out)
@@ -19,7 +19,7 @@ module Hotel
       
       @num_rooms = num_rooms
       @discount = discount / 100.0
-      @reservations = []
+      @reservations = reservations
     end
     
     def add_reservation(reservation)
@@ -44,8 +44,19 @@ module Hotel
       end
       
       reservation.confirm_reservation
-      
       return reservation
+    end
+    
+    def self.from_csv(record)
+      block = self.new(
+        name: record["name"], 
+        check_in: record["check_in"], 
+        check_out: record["check_out"],
+        num_rooms: record["num_rooms"],
+        discount: record["discount"],
+        reservations: record["reservations"]      
+      )
+      return block
     end
   end
 end
