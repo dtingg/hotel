@@ -12,20 +12,20 @@ def print_menu
   puts "\nMAIN MENU"
   
   menu_options = [
-    "List rooms", 
-    "Change a room price",
-    "Make a reservation", 
-    "Make a block reservation", 
-    "Confirm a reservation under a block", 
-    "List confirmed reservations by day",
-    "Save data to file", 
-    "Load data from file", 
-    "Exit"
-  ]
-  
-  menu_options.each_with_index do |option, index|
-    puts "#{index + 1}. #{option}"
-  end
+  "List rooms", 
+  "Change a room price",
+  "Make a reservation", 
+  "Make a block reservation", 
+  "Confirm a reservation under a block", 
+  "List confirmed reservations by day",
+  "Save data to file", 
+  "Load data from file", 
+  "Exit"
+]
+
+menu_options.each_with_index do |option, index|
+  puts "#{index + 1}. #{option}"
+end
 end
 
 def list_rooms
@@ -45,11 +45,11 @@ def change_price
   end
   
   print "What is the new nightly cost? "
-  new_cost = gets.chomp.to_f
+  new_cost = gets.chomp.to_i
   
   until new_cost > 0
     print "Please enter a new nightly cost that is greater than 0: "
-    new_cost = gets.chomp.to_f
+    new_cost = gets.chomp.to_i
   end
   
   MANAGER.change_room_cost(room_num: room_num, new_cost: new_cost)
@@ -162,6 +162,12 @@ def daily_reservations
 end
 
 def save_data
+  print "Please enter a filename for the rooms: "
+  rooms_file = gets.chomp
+  rooms_filename = rooms_file + ".csv"
+  
+  MANAGER.save_rooms(rooms_filename)
+  
   print "Please enter a filename for the reservations: "
   reservations_file = gets.chomp
   reservations_filename = reservations_file + ".csv"

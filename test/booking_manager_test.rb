@@ -264,19 +264,26 @@ describe "BookingManager class" do
   
   describe "load_files method" do
     it "Loads data from csv files" do
-      manager.load_files("test/test_reservations.csv", "test/test_blocks.csv")
+      manager.load_files("test/test_rooms.csv", "test/test_reservations.csv", "test/test_blocks.csv")
       
-      expect(manager.all_reservations.length).must_equal 12
+      expect(manager.all_rooms.length).must_equal 20
+      expect(manager.all_rooms.first.id).must_equal 1
+      expect(manager.all_rooms.last.nightly_cost).must_equal 300
+      expect(manager.all_rooms.first.reservations.length).must_equal 2
+      expect(manager.all_rooms.first.reservations.first.id).must_equal 1
+      
+      expect(manager.all_reservations.length).must_equal 8
       expect(manager.all_reservations.first.id).must_equal 1
-      expect(manager.all_reservations.first.status).must_equal :HOLD
-      expect(manager.all_reservations.first.discount).must_equal 0.5
       expect(manager.all_reservations.first.room.id).must_equal 1
+      expect(manager.all_reservations.first.status).must_equal :CONFIRMED
+      expect(manager.all_reservations.first.discount).must_equal 0.2
       
-      expect(manager.all_blocks.length).must_equal 3
+      expect(manager.all_blocks.length).must_equal 2
       expect(manager.all_blocks.first.name).must_equal "Tingg"
+      expect(manager.all_blocks.first.num_rooms).must_equal 3
+      expect(manager.all_blocks.first.reservations.first.discount).must_equal 0.2
       expect(manager.all_blocks.first.reservations.length).must_equal 3
       expect(manager.all_blocks.first.reservations.first.id).must_equal 1
-      expect(manager.all_blocks.first.reservations.first.discount).must_equal 0.5
     end
   end
 end

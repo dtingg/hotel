@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 describe "Reservation class" do
-  let (:room) { Hotel::Room.new(1)}
+  let (:room) { Hotel::Room.new(id: 1)}
   let (:reservation) { Hotel::Reservation.new(id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019") }
   
   describe "initialize method" do
@@ -46,7 +46,7 @@ describe "Reservation class" do
     
     it "Keeps track of discount" do
       reservation = Hotel::Reservation.new(
-        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD, discount: 0.25
+      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD, discount: 0.25
       )
       
       expect(reservation).must_respond_to :discount
@@ -61,7 +61,7 @@ describe "Reservation class" do
   describe "confirm_reservation method" do
     it "Changes the status to confirmed" do
       reservation = Hotel::Reservation.new(
-        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD
+      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD
       )
       reservation.confirm_reservation
       
@@ -76,10 +76,9 @@ describe "Reservation class" do
     
     it "Returns the correct cost if there is a discount" do
       reservation = Hotel::Reservation.new(
-        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :CONFIRMED, discount: 0.50)
-        
-        expect(reservation.total_cost).must_equal 400
-      end
+      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :CONFIRMED, discount: 0.50)
+      
+      expect(reservation.total_cost).must_equal 400
     end
   end
-  
+end

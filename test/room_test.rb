@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 describe "Room class" do
-  let (:room) { Hotel::Room.new(1) }
+  let (:room) { Hotel::Room.new(id: 1) }
   
   describe "initialize method" do
     it "Creates an instance of Room" do
@@ -15,12 +15,12 @@ describe "Room class" do
     
     it "Can have an id between 1 and 20" do
       expect(room.id).must_equal 1
-      expect(Hotel::Room.new(20).id).must_equal 20
+      expect(Hotel::Room.new(id: 20).id).must_equal 20
     end
     
     it "Raises an ArgumentError if id is outside of 1 - 20" do
-      expect{ Hotel::Room.new(0) }.must_raise ArgumentError
-      expect{ Hotel::Room.new(21) }.must_raise ArgumentError
+      expect{ Hotel::Room.new(id: 0) }.must_raise ArgumentError
+      expect{ Hotel::Room.new(id: 21) }.must_raise ArgumentError
     end
     
     it "Has a default nightly cost" do

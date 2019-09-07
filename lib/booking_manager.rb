@@ -48,7 +48,7 @@ module Hotel
       end
       
       reservation = Hotel::Reservation.new(
-        id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount
+      id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount
       )
       all_reservations << reservation
       room.add_reservation(reservation)
@@ -67,7 +67,7 @@ module Hotel
       end
       
       block = Hotel::RoomBlock.new(
-        name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount
+      name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount
       )
       
       num_rooms.times do
@@ -133,11 +133,12 @@ module Hotel
         file << headers
         
         all_reservations.each do |reservation|
-          row = [
-            reservation.id, reservation.room.id, 
-            reservation.check_in, reservation.check_out, 
-            reservation.status, reservation.discount
-          ]
+          row = [reservation.id, 
+          reservation.room.id, 
+          reservation.check_in, 
+          reservation.check_out, 
+          reservation.status, 
+          reservation.discount]
           file << row  
         end
       end
@@ -154,34 +155,58 @@ module Hotel
             reservation.id
           end
           
-          row = [
-            block.name, block.check_in, block.check_out, 
-            block.num_rooms, block.discount, reservations.join(";")
-          ]
+          row = [block.name, block.check_in, block.check_out, 
+          block.num_rooms, block.discount, reservations.join(";")]
           file << row  
         end
       end
     end
     
+    def room_from_csv(record)
+      room = Hotel::Room.new(
+      id: record["id"], nightly_cost: record["nightly_cost"]
+      )
+      
+      # p x = record["reservations"]
+      # x = x.split(";")
+      # x = x.map do |num|
+      #   num.to_i
+      # end
+      
+      # p x
+      
+      begin
+        room_list = record["reservations"].split(";")
+        room.reservations = room_list
+        
+        #   room.reservations = record["reservations"].split(";").to_i
+        #   p room.reservations
+      rescue NoMethodError
+        room.reservations = [record["reservations"]]
+      end
+      
+      return room
+    end
+    
     def reservation_from_csv(record)
       reservation = Hotel::Reservation.new(
-        id: record["id"],
-        room: find_room(record["room"].to_i),
-        check_in: record["check_in"],
-        check_out: record["check_out"],
-        status: record["status"].to_sym,
-        discount: record["discount"]
+      id: record["id"],
+      room: find_room(record["room"]),
+      check_in: record["check_in"],
+      check_out: record["check_out"],
+      status: record["status"].to_sym,
+      discount: record["discount"]
       )
       return reservation
     end
     
     def block_from_csv(record)
       block = Hotel::RoomBlock.new(
-        name: record["name"], 
-        check_in: record["check_in"], 
-        check_out: record["check_out"],
-        num_rooms: record["num_rooms"],
-        discount: record["discount"]      
+      name: record["name"], 
+      check_in: record["check_in"], 
+      check_out: record["check_out"],
+      num_rooms: record["num_rooms"],
+      discount: record["discount"]      
       )
       
       block.reservations = record["reservations"].split(";").map do |number|
@@ -191,18 +216,24 @@ module Hotel
       return block
     end
     
-    def load_files(reservations_file, blocks_file)
-      reservations = CSV.read(reservations_file, headers: true, converters: :numeric).map { 
-        |record| reservation_from_csv(record) 
-      }
+    def load_files(rooms_file, reservations_file, blocks_file)
+      rooms = CSV.read(rooms_file, headers: true, converters: :numeric).map { |record| room_from_csv(record) }
+      @all_rooms = rooms
       
+      reservations = CSV.read(reservations_file, headers: true, converters: :numeric).map { |record| reservation_from_csv(record) }
       @all_reservations = reservations
       
-      blocks = CSV.read(blocks_file, headers: true, converters: :numeric).map { 
-        |record| block_from_csv(record) 
-      }
-      
+      blocks = CSV.read(blocks_file, headers: true, converters: :numeric).map { |record| block_from_csv(record) }
       @all_blocks = blocks
-    end  
+      
+      @all_rooms.each do |room|
+        
+        if room.reservations.kind_of?(Array)
+          room.reservations.map! do |number|
+            find_reservation(number.to_i)
+          end
+        end  
+      end
+    end
   end
 end
