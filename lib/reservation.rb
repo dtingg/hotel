@@ -33,7 +33,6 @@ module Hotel
     def self.from_csv(record)
       reservation = self.new(
         id: record["id"],
-        # room: find_room(record["room"]),
         room: record["room"],
         check_in: record["check_in"],
         check_out: record["check_out"],

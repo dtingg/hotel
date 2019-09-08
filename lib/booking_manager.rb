@@ -39,7 +39,7 @@ module Hotel
       return available_rooms
     end
     
-    def make_reservation(check_in:, check_out:, status: :CONFIRMED, discount: nil)
+    def make_reservation(check_in:, check_out:, status: :CONFIRMED, discount: nil)      
       id = all_reservations.length + 1
       room = available_rooms(check_in: check_in, check_out: check_out)[0]
       
@@ -153,7 +153,6 @@ module Hotel
     def save_blocks(filename)
       CSV.open(filename, "w") do |file|
         headers = ["name", "check_in", "check_out", "num_rooms", "discount", "reservations"]
-        
         file << headers
         
         all_blocks.each do |block|
@@ -166,7 +165,7 @@ module Hotel
             block.check_in, 
             block.check_out, 
             block.num_rooms, 
-            block.discount, 
+            block.discount * 100, 
             reservations.join(";")
           ]
           file << row  
@@ -189,7 +188,9 @@ module Hotel
       @all_blocks = blocks
       
       all_blocks.map do |block|
-        block.reservations = block.reservations.split(";").map do |number|
+        list = block.reservations.split(";")
+        
+        block.reservations = list.map do |number|
           find_reservation(number.to_i)
         end
       end

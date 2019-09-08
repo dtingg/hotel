@@ -19,8 +19,6 @@ def print_menu
     "Make a block reservation", 
     "Confirm a reservation under a block", 
     "List confirmed reservations by day",
-    "Save data to file", 
-    "Load data from file", 
     "Exit"
   ]
   
@@ -173,7 +171,7 @@ def confirm_block
 end
 
 def daily_reservations
-  print "Enter day: "
+  print "Enter day (Example: May 1): "
   day = gets.chomp
   
   begin
@@ -190,48 +188,19 @@ def daily_reservations
 end
 
 def save_data
-  print "Please enter a filename for the rooms (Example: all_rooms): "
-  rooms_file = gets.chomp
-  rooms_filename = rooms_file + ".csv"
-  
-  MANAGER.save_rooms(rooms_filename)
-  
-  print "Please enter a filename for the reservations (Example: all_reservations): "
-  reservations_file = gets.chomp
-  reservations_filename = reservations_file + ".csv"
-  
-  MANAGER.save_reservations(reservations_filename)
-  
-  print "Please enter a filename for the room blocks (Example: all_blocks): "
-  blocks_file = gets.chomp
-  blocks_filename = blocks_file + ".csv"
-  
-  MANAGER.save_blocks(blocks_filename)
-  
-  puts "Your files were saved successfully."
+  MANAGER.save_rooms("data/rooms.csv")  
+  MANAGER.save_reservations("data/reservations.csv")
+  MANAGER.save_blocks("data/blocks.csv")
 end
 
 def load_data
-  print "Please enter the filename for rooms (Example: rooms.csv): "
-  rooms_file = gets.chomp
-  
-  print "Please enter the filename for reservations (Example: reservations.csv): "
-  reservations_file = gets.chomp
-  
-  print "Please enter the filename for room blocks (Example: blocks.csv): "
-  blocks_file = gets.chomp
-  
-  begin
-    MANAGER.load_files(rooms_file, reservations_file, blocks_file)
-  rescue
-    puts "That file does not exist. Please try again."
-    return
-  end
-  puts "Your files were uploaded successfully."
+  MANAGER.load_files("data/rooms.csv", "data/reservations.csv", "data/blocks.csv")
 end
 
 def main
   puts "Welcome to Dianna's Hotel Program"
+  
+  load_data
   
   play = true
   
@@ -241,7 +210,7 @@ def main
     print "\nPlease choose a menu number: "
     answer = gets.chomp.to_i
     
-    until (1..9).include?(answer)
+    until (1..7).include?(answer)
       print "Please enter a valid option: "
       answer = gets.chomp.to_i
     end
@@ -260,10 +229,7 @@ def main
     when 6
       daily_reservations
     when 7
-      save_data 
-    when 8
-      load_data
-    when 9
+      save_data
       puts "\nGoodbye!"
       play = false
     end
