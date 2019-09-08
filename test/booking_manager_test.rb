@@ -280,6 +280,7 @@ describe "BookingManager class" do
       expect(manager.all_rooms.first.reservations.length).must_equal 2
       expect(manager.all_rooms.first.reservations.first).must_be_kind_of Hotel::Reservation
       expect(manager.all_rooms.first.reservations.first.id).must_equal 1
+      expect(manager.all_rooms.last.reservations).must_equal []
       
       expect(manager.all_reservations.length).must_equal 8
       expect(manager.all_reservations.first).must_be_kind_of Hotel::Reservation

@@ -50,12 +50,20 @@ module Hotel
     def self.from_csv(record)
       room = self.new(id: record["id"], nightly_cost: record["nightly_cost"])
       
-      begin
-        room_list = record["reservations"].split(";")
-        room.reservations = room_list
-      rescue NoMethodError
-        room.reservations = [record["reservations"]]
+      data = record["reservations"]
+      
+      if !data
+        reservations = []
+      elsif data.is_a?(Integer)
+        reservations = [data]
+      else
+        list = data.split(";")
+        reservations = list.map do |number|
+          number.to_i
+        end
       end
+      
+      room.reservations = reservations
       
       return room
     end

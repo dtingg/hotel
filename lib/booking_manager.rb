@@ -194,10 +194,10 @@ module Hotel
         end
       end
       
-      @all_rooms.each do |room|  
-        if room.reservations.kind_of?(Array)
+      @all_rooms.each do |room|
+        if !room.reservations.empty?
           room.reservations.map! do |number|
-            find_reservation(number.to_i)
+            find_reservation(number)
           end
         end  
       end
