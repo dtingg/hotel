@@ -125,11 +125,11 @@ def make_block
   end
   
   print "Discount percentage (15 for 15%): "
-  discount = gets.chomp.to_i
+  discount = gets.chomp.to_f
   
   while discount <= 0 || discount > 100
     print "Please enter a valid discount percentage (1 - 100): "
-    discount = gets.chomp.to_i
+    discount = gets.chomp.to_f
   end
   
   begin
@@ -144,7 +144,7 @@ def make_block
   puts "  Check in: #{block.check_in}"
   puts "  Check out: #{block.check_out}"
   puts "  Number of rooms: #{block.num_rooms}"
-  puts "  Discount: #{(block.discount * 100).to_i}%"
+  puts "  Discount: #{block.discount * 100}%"
 end
 
 def confirm_block
