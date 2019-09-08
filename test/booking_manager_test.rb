@@ -278,19 +278,24 @@ describe "BookingManager class" do
       expect(manager.all_rooms.first.id).must_equal 1
       expect(manager.all_rooms.last.nightly_cost).must_equal 300
       expect(manager.all_rooms.first.reservations.length).must_equal 2
+      expect(manager.all_rooms.first.reservations.first).must_be_kind_of Hotel::Reservation
       expect(manager.all_rooms.first.reservations.first.id).must_equal 1
       
       expect(manager.all_reservations.length).must_equal 8
+      expect(manager.all_reservations.first).must_be_kind_of Hotel::Reservation
       expect(manager.all_reservations.first.id).must_equal 1
       expect(manager.all_reservations.first.room.id).must_equal 1
+      expect(manager.all_reservations.first.check_in).must_be_kind_of Date
       expect(manager.all_reservations.first.status).must_equal :CONFIRMED
       expect(manager.all_reservations.first.discount).must_equal 0.2
       
       expect(manager.all_blocks.length).must_equal 2
       expect(manager.all_blocks.first.name).must_equal "Tingg"
+      expect(manager.all_blocks.first.check_in).must_be_kind_of Date
       expect(manager.all_blocks.first.num_rooms).must_equal 3
       expect(manager.all_blocks.first.reservations.first.discount).must_equal 0.2
       expect(manager.all_blocks.first.reservations.length).must_equal 3
+      expect(manager.all_blocks.first.reservations.first).must_be_kind_of Hotel::Reservation
       expect(manager.all_blocks.first.reservations.first.id).must_equal 1
     end
   end

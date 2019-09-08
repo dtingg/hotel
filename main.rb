@@ -45,13 +45,15 @@ def change_price
     room_num = gets.chomp.to_i
   end
   
-  print "What is the new nightly cost? "
-  new_cost = gets.chomp.to_i
+  print "What is the new nightly cost? $"
+  new_cost = gets.chomp
   
-  until new_cost > 0
-    print "Please enter a new nightly cost that is greater than 0: "
-    new_cost = gets.chomp.to_i
+  while new_cost.include?(".")
+    print "Please enter whole dollars only: $"
+    new_cost = gets.chomp
   end
+  
+  new_cost = new_cost.to_i
   
   MANAGER.change_room_cost(room_num: room_num, new_cost: new_cost)
   puts "\nRoom #{room_num} now has a nightly cost of $#{"%.2f" % new_cost}."
@@ -65,9 +67,19 @@ def make_reservation
   check_out = gets.chomp
   
   begin
+    if Date.parse(check_in) > Date.parse(check_out)
+      puts "The check in date cannot be after the check out date."
+      return
+    end
+  rescue ArgumentError
+    puts "Those dates aren't valid. Please try again."
+    return
+  end
+  
+  begin
     reservation = MANAGER.make_reservation(check_in: check_in, check_out: check_out)
   rescue ArgumentError
-    puts "Those dates are invalid. Please try again."
+    puts "There are no available rooms for those dates."
     return
   end
   
@@ -85,11 +97,26 @@ def make_block
   print "Party name: "
   name = gets.chomp
   
+  if MANAGER.find_block(name)
+    puts "There is already a room block under that name."
+    return
+  end
+  
   print "Check in date: "
   check_in = gets.chomp
   
   print "Check out date: "
   check_out = gets.chomp
+  
+  begin
+    if Date.parse(check_in) > Date.parse(check_out)
+      puts "The check in date cannot be after the check out date."
+      return
+    end
+  rescue ArgumentError
+    puts "Those dates aren't valid. Please try again."
+    return
+  end
   
   print "Number of rooms (1 - 5): "
   num_rooms = gets.chomp.to_i
@@ -110,7 +137,7 @@ def make_block
   begin
     block = MANAGER.make_block(name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount)
   rescue ArgumentError
-    puts "That information is invalid. Please try again."
+    puts "There are not enough hotel rooms for a block of #{num_rooms} on those dates."
     return
   end
   
@@ -132,7 +159,7 @@ def confirm_block
     puts "There is no block reservation under that name."
     return
   rescue ArgumentError
-    puts "There are no more available rooms under that name."
+    puts "There are no more available rooms from that block."
     return
   end
   
