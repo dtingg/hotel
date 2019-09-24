@@ -82,13 +82,17 @@ end
 Once you have read through the above code, add a file to your Hotel project called `design-activity.md`. This file will be submitted with the rest of this exercise. In that file, please respond to the following prompts:
 
 - What classes does each implementation include? Are the lists the same?  
-  A has classes for CartEntry, ShoppingCart, and Order.  
-  B has classes for CartEntry, ShoppingCart, and Order.  
-  These lists are the same.  
+  
+  **A has classes for CartEntry, ShoppingCart, and Order.**  
+  **B has classes for CartEntry, ShoppingCart, and Order.**  
+  **These lists are the same.**  
+    
 - Write down a sentence to describe each class.  
-  CartEntry keeps track of a particular item in our cart.  
-  ShoppingCart keeps track of all of the items in our cart.  
-  Order keeps track of the price of our order.  
+  
+  **CartEntry keeps track of a particular item in our cart.**  
+  **ShoppingCart keeps track of all of the items in our cart.**  
+  **Order keeps track of the price of our order.**
+      
 - How do the classes relate to each other? It might be helpful to draw a diagram on a whiteboard or piece of paper.  
   When you instantiate an Order object, it creates a ShoppingCart object.  The ShoppingCart object keeps track of entries, which are CartEntry objects.  Order can calculate the total price of an order by interacting with ShoppingCart and CartEntry.
 - What **data** does each class store? How (if at all) does this differ between the two implementations?  
