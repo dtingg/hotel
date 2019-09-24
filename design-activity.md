@@ -95,7 +95,9 @@ Once you have read through the above code, add a file to your Hotel project call
       
 - How do the classes relate to each other? It might be helpful to draw a diagram on a whiteboard or piece of paper.  
   
-  **When you instantiate an Order object, it creates a ShoppingCart object.  The ShoppingCart object keeps track of entries, which are CartEntry objects.  Order can calculate the total price of an order by interacting with ShoppingCart and CartEntry.**
+  **When you instantiate an Order object, it creates a ShoppingCart object.**    
+  **The ShoppingCart object keeps track of entries, which are CartEntry objects.**  
+  **Order can calculate the total price of an order by interacting with ShoppingCart and CartEntry.**  
     
 - What **data** does each class store? How (if at all) does this differ between the two implementations?  
     
@@ -106,21 +108,21 @@ Once you have read through the above code, add a file to your Hotel project call
     
 - What **methods** does each class have? How (if at all) does this differ between the two implementations?  
   
-**A: Order has a total_price method.**  
-**B: CartEntry has a price method.  ShoppingCart has a price method.  Order has a total_price method.**  
+  **A: Order has a total_price method.**  
+  **B: CartEntry has a price method.  ShoppingCart has a price method.  Order has a total_price method.**  
   
-**B included a price method for CartEntry and ShoppingCart.**  
+  **B included a price method for CartEntry and ShoppingCart.**  
   
 - Consider the `Order#total_price` method. In each implementation:  
     - Is logic to compute the price delegated to "lower level" classes like `ShoppingCart` and `CartEntry`, or is it retained in `Order`?  
       
-    **A: The logic to compute the price is retained in Order.**  
-    **B: The logic to compute the price is delegated to lower level classes (ShoppingCart and CartEntry).**  
+      **A: The logic to compute the price is retained in Order.**  
+      **B: The logic to compute the price is delegated to lower level classes (ShoppingCart and CartEntry).**  
       
     - Does `total_price` directly manipulate the instance variables of other classes?  
       
-    **A: Yes, the total_price method directly manipulates the instance variables in the CartEntry class.**
-    **B: No, the total_price method relies on a wrapped price method in ShoppingCart, which relies on a wrapped price method in CartEntry.**
+      **A: Yes, the total_price method directly manipulates the instance variables in the CartEntry class.**
+      **B: No, the total_price method relies on a wrapped price method in ShoppingCart, which relies on a wrapped price method in CartEntry.**
       
 - If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?  
   
