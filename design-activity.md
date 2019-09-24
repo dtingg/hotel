@@ -90,7 +90,7 @@ Once you have read through the above code, add a file to your Hotel project call
 - Write down a sentence to describe each class.  
   
   **CartEntry keeps track of a particular item in our cart.**  
-  **ShoppingCart keeps track of all of the items in our cart.**  
+  **ShoppingCart keeps track of all the items in our cart.**  
   **Order keeps track of the price of our order.**
       
 - How do the classes relate to each other? It might be helpful to draw a diagram on a whiteboard or piece of paper.  
@@ -104,14 +104,14 @@ Once you have read through the above code, add a file to your Hotel project call
   **CartEntry stores unit_price and quantity.**  
   **ShoppingCart stores entries.**  
   **Order stores cart.**  
-  **This does not differ betwen the two implementations.**  
+  **This does not differ between the two implementations.**  
     
 - What **methods** does each class have? How (if at all) does this differ between the two implementations?  
   
   **A: Order has a total_price method.**  
   **B: CartEntry has a price method.  ShoppingCart has a price method.  Order has a total_price method.**  
   
-  **B included a price method for CartEntry and ShoppingCart.**  
+  **B includes a price method for CartEntry and ShoppingCart.**  
   
 - Consider the `Order#total_price` method. In each implementation:  
     - Is logic to compute the price delegated to "lower level" classes like `ShoppingCart` and `CartEntry`, or is it retained in `Order`?  
@@ -121,7 +121,7 @@ Once you have read through the above code, add a file to your Hotel project call
       
     - Does `total_price` directly manipulate the instance variables of other classes?  
       
-      **A: Yes, the total_price method directly manipulates the instance variables in the CartEntry class.**
+      **A: Yes, the total_price method directly manipulates the instance variables in the CartEntry class.**  
       **B: No, the total_price method relies on a wrapped price method in ShoppingCart, which relies on a wrapped price method in CartEntry.**
       
 - If we decide items are cheaper if bought in bulk, how would this change the code? Which implementation is easier to modify?  
@@ -130,11 +130,11 @@ Once you have read through the above code, add a file to your Hotel project call
     
 - Which implementation better adheres to the single responsibility principle?  
   
-  **I think B better adheres the single responsibility principle because each A has Order taking on too many tasks in order to calculate total_price.**
+  **I think B better adheres the single responsibility principle because A has Order taking on too many tasks in order to calculate total_price.**
      
 - Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?  
     
-  **I think B is also more loosely coupled.  For example, Order asks shopping cart to get the price of itself, but it doesn't specify how to do it.  Similarly, ShoppingCart asks each entry to return its price, but doesn't get into specifics about the implementation.**
+  **I think B is also more loosely coupled.  For example, Order asks ShoppingCart to get the price of itself, but it doesn't specify how to do it.  Similarly, ShoppingCart asks each CartEntry to return its price, but doesn't get into specifics about the implementation.**
 
 Once you've responded to the prompts, `git add design-activity.md` and `git commit`!
 
