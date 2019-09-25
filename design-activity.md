@@ -160,7 +160,7 @@ You might recall writing a file called `refactor.txt`. Take a look at the refact
 - Do these refactors improve the clarity of your code?  
   **Yes, I think some of my suggestions will help improve the clarity of my code.**  
 - Do you still agree with your previous assessment, or could your refactor be further improved?  
-  **Generally, I agree with my previous assessment.  I made a few minor changes.  There were a few things I re-evaluated, but ultimately decided against doing them.**
+  **Generally, I agree with my previous assessment and I made several changes.  There were a few things I re-evaluated, but ultimately decided against changing them.**
 
 ### Activity
 
@@ -175,4 +175,4 @@ Once you're satisfied, `git commit` your changes and then `push` them to GitHub.
 ### Summary
 **My previous hotel program had four classes: Room, RoomBlock, Reservation, and BookingManager.  After reviewing the code, I am still happy with how I split up the various responsibilities.  I don't think any of my classes directly manipulate another class's instance variables.  After more thought, I also don't think a class for DateRange is necessary.**
   
-**In order to improve my code, I did implement several custom errors.  These help identify the specific problem instead of always returning an ArgumentError.**
+**In order to improve my code, I did implement several custom errors.  These help identify the specific problem instead of always returning an ArgumentError.  In BookingManager, I also changed the data structures for all_rooms, all_reservations, and all_blocks to hashes instead of arrays, based on feedback I received from my original pull request.**
