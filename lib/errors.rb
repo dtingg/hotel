@@ -5,6 +5,8 @@ module Hotel
   
   
   
+  class CheckInDateError < StandardError
+  end
   
   
   

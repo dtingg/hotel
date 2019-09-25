@@ -33,7 +33,7 @@ describe "Reservation class" do
       check_in = "August 5, 2019"
       check_out = "August 1, 2019"
       
-      expect { Hotel::Reservation.new(id: 1, room: room, check_in: check_in, check_out: check_out) }.must_raise ArgumentError
+      expect { Hotel::Reservation.new(id: 1, room: room, check_in: check_in, check_out: check_out) }.must_raise Hotel::CheckInDateError
     end
     
     it "Keeps track of status" do
@@ -46,7 +46,7 @@ describe "Reservation class" do
     
     it "Keeps track of discount" do
       reservation = Hotel::Reservation.new(
-      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD, discount: 0.25
+        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD, discount: 0.25
       )
       
       expect(reservation).must_respond_to :discount
@@ -61,7 +61,7 @@ describe "Reservation class" do
   describe "confirm_reservation method" do
     it "Changes the status to confirmed" do
       reservation = Hotel::Reservation.new(
-      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD
+        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :HOLD
       )
       reservation.confirm_reservation
       
@@ -76,9 +76,10 @@ describe "Reservation class" do
     
     it "Returns the correct cost if there is a discount" do
       reservation = Hotel::Reservation.new(
-      id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :CONFIRMED, discount: 0.50)
-      
-      expect(reservation.total_cost).must_equal 400
+        id: 1, room: room, check_in: "August 1, 2019", check_out: "August 5, 2019", status: :CONFIRMED, discount: 0.50)
+        
+        expect(reservation.total_cost).must_equal 400
+      end
     end
   end
-end
+  
