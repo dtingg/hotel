@@ -77,7 +77,7 @@ def make_reservation
   
   begin
     reservation = MANAGER.make_reservation(check_in: check_in, check_out: check_out)
-  rescue ArgumentError
+  rescue Hotel::NoAvailableRoomError
     puts "There are no available rooms for those dates."
     return
   end
@@ -135,7 +135,7 @@ def make_block
   
   begin
     block = MANAGER.make_block(name: name, check_in: check_in, check_out: check_out, num_rooms: num_rooms, discount: discount)
-  rescue ArgumentError
+  rescue Hotel::NoAvailableRoomError
     puts "There are not enough hotel rooms for a block of #{num_rooms} on those dates."
     return
   end
@@ -157,7 +157,7 @@ def confirm_block
   rescue NoMethodError
     puts "There is no block reservation under that name."
     return
-  rescue ArgumentError
+  rescue Hotel::BlockFullError
     puts "There are no more available rooms from that block."
     return
   end
