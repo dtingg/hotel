@@ -10,11 +10,11 @@ module Hotel
       @check_out = Date.parse(check_out)
       
       if @check_in > @check_out
-        raise ArgumentError.new("The check in date cannot be after the check out date.")
+        raise CheckInDateError.new("The check in date cannot be after the check out date.")
       end  
       
       if num_rooms <= 0 || num_rooms > 5
-        raise ArgumentError.new("A block can only contain 1 - 5 rooms.")
+        raise BlockNumberError.new("A block can only contain 1 - 5 rooms.")
       end
       
       @num_rooms = num_rooms

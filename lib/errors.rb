@@ -1,17 +1,24 @@
 module Hotel
   
-  class RoomNumberError < StandardError
-  end
+  
+  
+  
+  
+  
   
   
   
   class CheckInDateError < StandardError
   end
   
+  class BlockNumberError < StandardError
+  end
   
   
   
   
+  class RoomNumberError < StandardError
+  end
   
   
   

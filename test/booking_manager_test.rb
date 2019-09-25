@@ -126,7 +126,7 @@ describe "BookingManager class" do
         manager.make_block(
           name: "Tingg", check_in: "August 15, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
         ) 
-      }.must_raise ArgumentError
+      }.must_raise Hotel::CheckInDateError
     end
     
     it "Throws an error if there is already a block under that name" do
