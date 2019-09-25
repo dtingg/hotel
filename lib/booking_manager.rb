@@ -6,8 +6,8 @@ module Hotel
     def initialize
       # This is a list of all of the rooms in the hotel
       @all_rooms = Hotel::Room.all
-      @all_reservations = []
-      @all_blocks = []
+      @all_reservations = {}
+      @all_blocks = {}
     end
     
     def find_room(room_num)
@@ -16,9 +16,7 @@ module Hotel
     end
     
     def find_reservation(reservation_num)
-      correct_reservation = all_reservations.find do |reservation|
-        reservation.id == reservation_num
-      end
+      correct_reservation = all_reservations[reservation_num.to_s]
       return correct_reservation
     end
     
@@ -48,7 +46,7 @@ module Hotel
       reservation = Hotel::Reservation.new(
         id: id, room: room, check_in: check_in, check_out: check_out, status: status, discount: discount
       )
-      all_reservations << reservation
+      all_reservations[id.to_s] = reservation
       room.add_reservation(reservation)
       
       return reservation
@@ -77,14 +75,12 @@ module Hotel
         block.add_reservation(reservation)
       end  
       
-      all_blocks << block
+      all_blocks[block.name] = block
       return block
     end
     
     def find_block(name)
-      correct_block = all_blocks.find do |block|
-        block.name == name.capitalize
-      end
+      correct_block = all_blocks[name]
       return correct_block
     end
     
@@ -98,7 +94,7 @@ module Hotel
     # Includes new and current guests, but not people who checked out on that date.
     # Shows confirmed reservations, but not unconfirmed rooms being held for a room block
     def find_day_reservations(date)
-      day_reservations = all_reservations.select do |reservation|
+      day_reservations = all_reservations.select do |number, reservation|
         start_date = reservation.check_in
         end_date = reservation.check_out
         (start_date...end_date).include?(Date.parse(date)) && reservation.status == :CONFIRMED
@@ -134,7 +130,7 @@ module Hotel
         headers = ["id", "room", "check_in", "check_out", "status", "discount"]
         file << headers
         
-        all_reservations.each do |reservation|
+        all_reservations.each do |number, reservation|
           row = [
             reservation.id, 
             reservation.room.id, 
@@ -153,7 +149,7 @@ module Hotel
         headers = ["name", "check_in", "check_out", "num_rooms", "discount", "reservations"]
         file << headers
         
-        all_blocks.each do |block|
+        all_blocks.each do |name, block|
           reservations = block.reservations.map do |reservation|
             reservation.id
           end
@@ -181,21 +177,31 @@ module Hotel
       end
       
       reservations = CSV.read(reservations_file, headers: true, converters: :numeric).map { |record| Hotel::Reservation.from_csv(record) }
-      @all_reservations = reservations
       
-      all_reservations.map do |reservation|
+      @all_reservations = {}
+      
+      reservations.map do |reservation|
         reservation.room = find_room(reservation.room)
       end
       
-      blocks = CSV.read(blocks_file, headers: true, converters: :numeric).map { |record| Hotel::RoomBlock.from_csv(record) }
-      @all_blocks = blocks
+      reservations.each_with_index do |reservation, index|
+        @all_reservations[(index + 1).to_s] = reservation
+      end
       
-      all_blocks.map do |block|
+      blocks = CSV.read(blocks_file, headers: true, converters: :numeric).map { |record| Hotel::RoomBlock.from_csv(record) }
+      
+      @all_blocks = {}
+      
+      blocks.map do |block|
         list = block.reservations.split(";")
         
         block.reservations = list.map do |number|
           find_reservation(number.to_i)
         end
+      end
+      
+      blocks.each do |block|
+        @all_blocks[block.name] = block
       end
       
       @all_rooms.each do |number, room|

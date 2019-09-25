@@ -19,14 +19,14 @@ describe "BookingManager class" do
     
     it "Responds to all_reservations" do
       expect(manager).must_respond_to :all_reservations
-      expect(manager.all_reservations).must_be_kind_of Array
-      expect(manager.all_reservations).must_equal []
+      expect(manager.all_reservations).must_be_kind_of Hash
+      expect(manager.all_reservations.empty?).must_equal true
     end  
     
     it "Responds to all_blocks" do
       expect(manager).must_respond_to :all_blocks
-      expect(manager.all_blocks).must_be_kind_of Array
-      expect(manager.all_blocks).must_equal []
+      expect(manager.all_blocks).must_be_kind_of Hash
+      expect(manager.all_blocks.empty?).must_equal true
     end  
   end
   
@@ -85,7 +85,7 @@ describe "BookingManager class" do
       reservation = manager.make_reservation(check_in: "August 10, 2019", check_out: "August 12, 2019")
       
       expect(reservation).must_be_kind_of Hotel::Reservation
-      expect(manager.all_reservations.include?(reservation)).must_equal true
+      expect(manager.all_reservations.values.include?(reservation)).must_equal true
       expect(reservation.room.reservations.include?(reservation)).must_equal true
     end
     
@@ -105,7 +105,7 @@ describe "BookingManager class" do
       )
       
       expect(block).must_be_kind_of Hotel::RoomBlock
-      expect(manager.all_blocks.include?(block)).must_equal true
+      expect(manager.all_blocks.values.include?(block)).must_equal true
     end
     
     it "Throws an error if not enough rooms are available" do
@@ -191,10 +191,10 @@ describe "BookingManager class" do
       
       august_12_reservations = manager.find_day_reservations(date)
       
-      expect(august_12_reservations).must_be_kind_of Array
+      expect(august_12_reservations).must_be_kind_of Hash
       expect(august_12_reservations.length).must_equal 2
       
-      august_12_reservations.each do |reservation|
+      august_12_reservations.each do |number, reservation|
         reservation.must_be_kind_of Hotel::Reservation
       end
     end
@@ -274,30 +274,30 @@ describe "BookingManager class" do
     it "Loads data from csv files" do
       manager.load_files("test/load_rooms.csv", "test/load_reservations.csv", "test/load_blocks.csv")
       
-      # expect(manager.all_rooms.length).must_equal 20
-      # expect(manager.all_rooms.first.id).must_equal 1
-      # expect(manager.all_rooms.last.nightly_cost).must_equal 300
-      # expect(manager.all_rooms.first.reservations.length).must_equal 2
-      # expect(manager.all_rooms.first.reservations.first).must_be_kind_of Hotel::Reservation
-      # expect(manager.all_rooms.first.reservations.first.id).must_equal 1
-      # expect(manager.all_rooms.last.reservations).must_equal []
+      expect(manager.all_rooms.length).must_equal 20
+      expect(manager.all_rooms["1"].id).must_equal 1
+      expect(manager.all_rooms["20"].nightly_cost).must_equal 300
+      expect(manager.all_rooms["1"].reservations.length).must_equal 2
+      expect(manager.all_rooms["1"].reservations.first).must_be_kind_of Hotel::Reservation
+      expect(manager.all_rooms["1"].reservations.first.id).must_equal 1
+      expect(manager.all_rooms["20"].reservations).must_equal []
       
       expect(manager.all_reservations.length).must_equal 8
-      expect(manager.all_reservations.first).must_be_kind_of Hotel::Reservation
-      expect(manager.all_reservations.first.id).must_equal 1
-      expect(manager.all_reservations.first.room.id).must_equal 1
-      expect(manager.all_reservations.first.check_in).must_be_kind_of Date
-      expect(manager.all_reservations.first.status).must_equal :CONFIRMED
-      expect(manager.all_reservations.first.discount).must_equal 0.2
+      expect(manager.all_reservations["1"]).must_be_kind_of Hotel::Reservation
+      expect(manager.all_reservations["1"].id).must_equal 1
+      expect(manager.all_reservations["1"].room.id).must_equal 1
+      expect(manager.all_reservations["1"].check_in).must_be_kind_of Date
+      expect(manager.all_reservations["1"].status).must_equal :CONFIRMED
+      expect(manager.all_reservations["1"].discount).must_equal 0.2
       
       expect(manager.all_blocks.length).must_equal 2
-      expect(manager.all_blocks.first.name).must_equal "Tingg"
-      expect(manager.all_blocks.first.check_in).must_be_kind_of Date
-      expect(manager.all_blocks.first.num_rooms).must_equal 3
-      expect(manager.all_blocks.first.reservations.first.discount).must_equal 0.2
-      expect(manager.all_blocks.first.reservations.length).must_equal 3
-      expect(manager.all_blocks.first.reservations.first).must_be_kind_of Hotel::Reservation
-      expect(manager.all_blocks.first.reservations.first.id).must_equal 1
+      expect(manager.all_blocks["Tingg"].name).must_equal "Tingg"
+      expect(manager.all_blocks["Tingg"].check_in).must_be_kind_of Date
+      expect(manager.all_blocks["Tingg"].num_rooms).must_equal 3
+      expect(manager.all_blocks["Tingg"].reservations.first.discount).must_equal 0.2
+      expect(manager.all_blocks["Tingg"].reservations.length).must_equal 3
+      expect(manager.all_blocks["Tingg"].reservations.first).must_be_kind_of Hotel::Reservation
+      expect(manager.all_blocks["Tingg"].reservations.first.id).must_equal 1
     end
   end
 end
