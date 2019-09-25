@@ -19,8 +19,8 @@ describe "Room class" do
     end
     
     it "Raises an ArgumentError if id is outside of 1 - 20" do
-      expect{ Hotel::Room.new(id: 0) }.must_raise ArgumentError
-      expect{ Hotel::Room.new(id: 21) }.must_raise ArgumentError
+      expect{ Hotel::Room.new(id: 0) }.must_raise Hotel::RoomNumberError
+      expect{ Hotel::Room.new(id: 21) }.must_raise Hotel::RoomNumberError
     end
     
     it "Has a default nightly cost" do
