@@ -159,7 +159,7 @@ You might recall writing a file called `refactor.txt`. Take a look at the refact
   **My instructions are pretty easy to follow.**  
 - Do these refactors improve the clarity of your code?  
   **Yes, I think some of my suggestions will help improve the clarity of my code.**  
-- Do you still agree with your previous assessment, or could your refactor be further improved?
+- Do you still agree with your previous assessment, or could your refactor be further improved?  
   **Generally, I agree with my previous assessment.  I made a few minor changes.  There were a few things I re-evaluated, but ultimately decided against doing them.**
 
 ### Activity
