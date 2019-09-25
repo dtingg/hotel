@@ -80,7 +80,7 @@ module Hotel
     end
     
     def find_block(name)
-      correct_block = all_blocks[name]
+      correct_block = all_blocks[name.capitalize]
       return correct_block
     end
     
