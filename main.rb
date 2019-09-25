@@ -183,7 +183,7 @@ def daily_reservations
   end
   
   puts "\nRESERVATIONS FOR #{day.upcase}"
-  day_reservations.each do |reservation|
+  day_reservations.each do |name, reservation|
     puts "Reservation: #{reservation.id}, Room: #{reservation.room.id}, Check In: #{reservation.check_in}, Check Out: #{reservation.check_out}"
   end
 end
