@@ -30,7 +30,7 @@ end
 
 def list_rooms
   puts "\nALL HOTEL ROOMS"
-  MANAGER.all_rooms.each do |room|
+  MANAGER.all_rooms.each do |number, room|
     print "Room #{room.id}, Nightly Cost: $#{"%.2f" % room.nightly_cost}\n"
   end
 end

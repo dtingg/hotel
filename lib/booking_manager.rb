@@ -11,9 +11,7 @@ module Hotel
     end
     
     def find_room(room_num)
-      correct_room = all_rooms.find do |room|
-        room.id == room_num
-      end
+      correct_room = all_rooms[room_num.to_s]  
       return correct_room
     end
     
@@ -32,7 +30,7 @@ module Hotel
     def available_rooms(check_in:, check_out:)
       available_rooms = []
       
-      all_rooms.each do |room|
+      all_rooms.each do |number, room|
         result = room.available?(check_in: check_in, check_out: check_out)        
         available_rooms << room if result
       end        
@@ -114,7 +112,7 @@ module Hotel
         headers = ["id", "nightly_cost", "reservations"]
         file << headers
         
-        all_rooms.each do |room|
+        all_rooms.each do |number, room|
           reservations = room.reservations.map do |reservation|
             reservation.id
           end
@@ -175,7 +173,12 @@ module Hotel
     
     def load_files(rooms_file, reservations_file, blocks_file)
       rooms = CSV.read(rooms_file, headers: true, converters: :numeric).map { |record| Hotel::Room.from_csv(record) }
-      @all_rooms = rooms
+      
+      @all_rooms = {}
+      
+      rooms.each_with_index do |room, index|
+        @all_rooms[(index + 1).to_s] = room
+      end
       
       reservations = CSV.read(reservations_file, headers: true, converters: :numeric).map { |record| Hotel::Reservation.from_csv(record) }
       @all_reservations = reservations
@@ -195,7 +198,7 @@ module Hotel
         end
       end
       
-      @all_rooms.each do |room|
+      @all_rooms.each do |number, room|
         if !room.reservations.empty?
           room.reservations.map! do |number|
             find_reservation(number)

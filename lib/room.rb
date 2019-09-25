@@ -38,10 +38,11 @@ module Hotel
     end
     
     def self.all
-      all_rooms = []
+      all_rooms = {}
       
       NUMBER_OF_ROOMS.times do |i|
-        all_rooms << self.new(id: i + 1)
+        room_num = i + 1
+        all_rooms[room_num.to_s] = self.new(id: room_num)
       end
       
       return all_rooms
