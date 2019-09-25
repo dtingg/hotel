@@ -142,15 +142,25 @@ Once you've responded to the prompts, `git add design-activity.md` and `git comm
 
 Now that we've got you thinking about design, spend some time to revisit the code you wrote for the Hotel project. For each class in your program, ask yourself the following questions:
 - What is this class's responsibility?
-    - You should be able to describe it in a single sentence.
-- Is this class responsible for exactly one thing?
-- Does this class take on any responsibility that should be delegated to "lower level" classes?
-- Is there code in other classes that directly manipulates this class's instance variables?
+    - You should be able to describe it in a single sentence.  
+      **Room represents a single hotel room.**  
+      **RoomBlock represents a block of rooms reserved for a special event.**  
+      **Reservation represents a hotel reservation.**  
+      **BookingManager manages reservations/block reservations.**  
+- Is this class responsible for exactly one thing?  
+  **Yes**  
+- Does this class take on any responsibility that should be delegated to "lower level" classes?  
+  **No**  
+- Is there code in other classes that directly manipulates this class's instance variables?  
+  **No**  
 
 You might recall writing a file called `refactor.txt`. Take a look at the refactor plans that you wrote, and consider the following:
-- How easy is it to follow your own instructions?
-- Do these refactors improve the clarity of your code?
-- Do you still agree with your previous assesment, or could your refactor be further improved?
+- How easy is it to follow your own instructions?  
+  **My instructions are pretty easy to follow.**  
+- Do these refactors improve the clarity of your code?  
+  **Yes, I think some of my suggestions will help improve the clarity of my code.**  
+- Do you still agree with your previous assessment, or could your refactor be further improved?
+  **Generally, I agree with my previous assessment.  I made a few minor changes.  There were a few things I re-evaluated, but ultimately decided against doing them.**
 
 ### Activity
 
@@ -161,3 +171,8 @@ If you need inspiration, remember that the [reference implementation](https://gi
 Then make the changes! Don't forget to take advantage of all the tests you wrote - if they're well structured, they should quickly inform you when your refactoring breaks something.
 
 Once you're satisfied, `git commit` your changes and then `push` them to GitHub. This will automatically update your pull request.
+
+### Summary
+**My previous hotel program had four classes: Room, RoomBlock, Reservation, and BookingManager.  After reviewing the code, I am still happy with how I split up the various responsibilities.  I don't think any of my classes directly manipulate another class's instance variables.  After more thought, I also don't think a class for DateRange is necessary.**
+  
+**In order to improve my code, I did implement several custom errors.  These help identify the specific problem instead of always returning an ArgumentError.**
