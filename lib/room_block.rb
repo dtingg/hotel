@@ -40,7 +40,7 @@ module Hotel
       reservation = available_rooms[0]
       
       if !reservation
-        raise ArgumentError.new("There are no more available rooms from that block.")
+        raise BlockFullError.new("There are no more available rooms from that block.")
       end
       
       reservation.confirm_reservation

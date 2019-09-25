@@ -94,7 +94,7 @@ describe "BookingManager class" do
         manager.make_reservation(check_in: "August 1, 2019", check_out: "August 2, 2019")
       end
       
-      expect { manager.make_reservation(check_in: "August 1, 2019", check_out: "August 2, 2019") }.must_raise ArgumentError
+      expect { manager.make_reservation(check_in: "August 1, 2019", check_out: "August 2, 2019") }.must_raise Hotel::NoAvailableRoomError
     end
   end
   
@@ -118,7 +118,7 @@ describe "BookingManager class" do
         manager.make_block(
           name: "Wright", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
         ) 
-      }.must_raise ArgumentError
+      }.must_raise Hotel::NoAvailableRoomError
     end
     
     it "Throws an error if check_in date is after check_out date" do
@@ -136,7 +136,7 @@ describe "BookingManager class" do
         manager.make_block(
           name: "Tingg", check_in: "August 5, 2019", check_out: "August 10, 2019", num_rooms: 3, discount: 50
         ) 
-      }.must_raise ArgumentError
+      }.must_raise Hotel::BlockNameError
     end
     
     it "Makes single reservations for each room in the block" do
@@ -175,7 +175,7 @@ describe "BookingManager class" do
         manager.make_block_reservation("Tingg")
       end
       
-      expect{ manager.make_block_reservation("Tingg") }.must_raise ArgumentError
+      expect{ manager.make_block_reservation("Tingg") }.must_raise Hotel::BlockFullError
     end
   end
   

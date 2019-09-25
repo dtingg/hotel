@@ -44,7 +44,7 @@ module Hotel
       room = available_rooms(check_in: check_in, check_out: check_out)[0]
       
       if !room
-        raise ArgumentError.new("There are no available rooms for those dates.")
+        raise NoAvailableRoomError.new("There are no available rooms for those dates.")
       end
       
       reservation = Hotel::Reservation.new(
@@ -61,13 +61,13 @@ module Hotel
     # Enter discount as a whole number (50 for 50%)
     def make_block(name:, check_in:, check_out:, num_rooms:, discount:)
       if find_block(name)
-        raise ArgumentError.new("There is already a room block under name #{name}.")
+        raise BlockNameError.new("There is already a room block under name #{name}.")
       end
       
       rooms = available_rooms(check_in: check_in, check_out: check_out)
       
       if rooms.length < num_rooms
-        raise ArgumentError.new("There are not enough hotel rooms for a block of #{num_rooms} on those dates.")
+        raise NoAvailableRoomError.new("There are not enough hotel rooms for a block of #{num_rooms} on those dates.")
       end
       
       block = Hotel::RoomBlock.new(
